@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0f0f0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Masraf" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Masraf — Daily Spending</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --surface2: #242424;
+      --border: #2e2e2e;
+      --accent: #c8f060;
+      --accent2: #60d4f0;
+      --text: #f0ede8;
+      --muted: #888;
+      --danger: #ff5a5a;
+      --radius: 14px;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); overscroll-behavior: none; }
+    #app { display: flex; flex-direction: column; height: 100dvh; max-width: 480px; margin: 0 auto; }
+
+    /* SETUP SCREEN */
+    #setupScreen {
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; height: 100dvh; padding: 32px 24px; gap: 20px;
+    }
+    .setup-logo { font-family: var(--sans); font-size: 36px; font-weight: 800; color: var(--text); }
+    .setup-logo span { color: var(--accent); }
+    .setup-sub { font-size: 14px; color: var(--muted); text-align: center; line-height: 1.6; }
+    .setup-card {
+      width: 100%; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 12px;
+    }
+    .setup-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .setup-inp {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+      color: var(--text); font-family: var(--mono); font-size: 13px; padding: 12px;
+      width: 100%; outline: none;
+    }
+    .setup-inp:focus { border-color: var(--accent); }
+    .setup-inp::placeholder { color: var(--muted); }
+    .btn-setup {
+      background: var(--accent); color: #0f0f0f; border: none; border-radius: 10px;
+      font-family: var(--sans); font-size: 15px; font-weight: 800; padding: 13px;
+      width: 100%; cursor: pointer;
+    }
+    .setup-hint { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.7; }
+    .setup-hint a { color: var(--accent2); }
+
+    /* HEADER */
+    header {
+      padding: 16px 20px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0; gap: 8px;
+    }
+    .logo { font-family: var(--sans); font-size: 20px; font-weight: 800; color: var(--text); }
+    .logo span { color: var(--accent); }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+    .rate-chip {
+      display: flex; align-items: center; gap: 4px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+      padding: 5px 10px 5px 12px; font-family: var(--mono); font-size: 11px; color: var(--muted);
+    }
+    .rate-chip input {
+      background: none; border: none; outline: none; color: var(--accent); font-family: var(--mono);
+      font-size: 11px; width: 65px; text-align: right;
+    }
+    .sync-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .sync-dot.synced { background: var(--accent); }
+    .sync-dot.syncing { background: var(--accent2); animation: pulse 1s infinite; }
+    .sync-dot.error { background: var(--danger); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* TABS */
+    .tabs {
+      display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; padding: 0 20px;
+    }
+    .tab {
+      flex: 1; padding: 10px 0; background: none; border: none; color: var(--muted);
+      font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer;
+      border-bottom: 2px solid transparent; transition: all 0.2s;
+    }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* SCROLL AREA */
+    .scroll-area {
+      flex: 1; overflow-y: auto; padding: 16px 20px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .scroll-area::-webkit-scrollbar { display: none; }
+
+    /* ADD FORM */
+    .add-form {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .form-row { display: flex; gap: 8px; }
+    .inp {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+      color: var(--text); font-family: var(--sans); font-size: 15px; padding: 10px 12px;
+      width: 100%; outline: none; transition: border-color 0.2s;
+    }
+    .inp:focus { border-color: var(--accent); }
+    .inp::placeholder { color: var(--muted); }
+    .inp-amount { font-family: var(--mono); }
+    select.inp { appearance: none; -webkit-appearance: none; }
+    .btn-add {
+      background: var(--accent); color: #0f0f0f; border: none; border-radius: 10px;
+      font-family: var(--sans); font-size: 15px; font-weight: 800; padding: 11px;
+      width: 100%; cursor: pointer; transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-add:active { opacity: 0.8; transform: scale(0.98); }
+    .btn-add:disabled { opacity: 0.4; }
+
+    /* DAY CARD */
+    .day-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; animation: fadeUp 0.25s ease;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .day-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 12px 14px 10px; border-bottom: 1px solid var(--border);
+    }
+    .day-date { font-family: var(--mono); font-size: 13px; color: var(--accent2); font-weight: 700; }
+    .day-sum { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .day-sum b { color: var(--text); }
+    .entry {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 14px; border-bottom: 1px solid var(--border); gap: 8px;
+    }
+    .entry:last-child { border-bottom: none; }
+    .entry-name { font-size: 14px; color: var(--text); flex: 1; }
+    .entry-amt { font-family: var(--mono); font-size: 13px; color: var(--muted); white-space: nowrap; }
+    .entry-del {
+      background: none; border: none; color: var(--border); font-size: 18px;
+      cursor: pointer; padding: 0 0 0 6px; line-height: 1; transition: color 0.15s;
+    }
+    .entry-del:active { color: var(--danger); }
+
+    /* SUMMARY */
+    .summary-block {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+    .summary-header {
+      padding: 14px 16px 10px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .summary-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .grand-total { font-family: var(--mono); font-size: 13px; }
+    .grand-total .ll { color: var(--text); font-weight: 700; }
+    .grand-total .usd { color: var(--accent); }
+    .summary-text {
+      font-family: var(--mono); font-size: 12px; line-height: 1.8; padding: 14px 16px;
+      color: var(--text); white-space: pre-wrap; word-break: break-word;
+    }
+    .btn-copy {
+      margin: 0 16px 12px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--accent); font-family: var(--sans); font-weight: 600;
+      font-size: 14px; padding: 11px; width: calc(100% - 32px); cursor: pointer;
+    }
+    .btn-secondary {
+      margin: 0 16px 16px; background: none; border: 1px solid var(--border);
+      border-radius: 10px; color: var(--muted); font-family: var(--sans); font-weight: 600;
+      font-size: 13px; padding: 10px; width: calc(100% - 32px); cursor: pointer;
+    }
+    .btn-danger {
+      margin: 0 16px 16px; background: none; border: 1px solid var(--border);
+      border-radius: 10px; color: var(--danger); font-family: var(--sans); font-weight: 600;
+      font-size: 13px; padding: 10px; width: calc(100% - 32px); cursor: pointer;
+    }
+
+    /* EMPTY */
+    .empty { text-align: center; padding: 48px 0; color: var(--muted); font-size: 14px; }
+    .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
+
+    /* LOADING */
+    .loading { text-align: center; padding: 48px 0; color: var(--muted); font-size: 13px; font-family: var(--mono); }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--accent); color: #0f0f0f; font-family: var(--sans); font-weight: 700;
+      font-size: 13px; padding: 10px 20px; border-radius: 999px;
+      opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 99; white-space: nowrap;
+    }
+    .toast.error-toast { background: var(--danger); color: #fff; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div id="setupScreen">
+  <div class="setup-logo">mas<span>raf</span></div>
+  <p class="setup-sub">Paste your Google Apps Script URL below to connect your Google Sheet.</p>
+  <div class="setup-card">
+    <div class="setup-label">Apps Script Web App URL</div>
+    <input class="setup-inp" id="urlInput" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
+    <button class="btn-setup" onclick="saveUrl()">Connect & Start →</button>
+  </div>
+  <p class="setup-hint">
+    Don't have a URL yet?<br>
+    Follow the setup guide in the <strong>README.txt</strong> file.
+  </p>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none;">
+  <header>
+    <div class="logo">mas<span>raf</span></div>
+    <div class="header-right">
+      <div class="rate-chip">
+        LL/$
+        <input type="number" id="rateInput" value="90000" step="1000" />
+      </div>
+      <div class="sync-dot" id="syncDot" title="Sync status"></div>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('log')">Log</button>
+    <button class="tab" onclick="switchTab('summary')">Summary</button>
+  </div>
+
+  <div class="scroll-area" id="logTab">
+    <div class="add-form">
+      <input class="inp" id="catIn" type="text" placeholder="Category (e.g. Benzine)" autocomplete="off" />
+      <div class="form-row">
+        <input class="inp inp-amount" id="amtIn" type="number" placeholder="Amount L.L." min="0" step="1000" style="flex:2" />
+        <select class="inp" id="dayIn" style="flex:1"></select>
+      </div>
+      <button class="btn-add" id="addBtn" onclick="addEntry()">+ Add</button>
+    </div>
+    <div id="entriesList"><div class="loading">Loading from Google Sheets...</div></div>
+  </div>
+
+  <div class="scroll-area" id="summaryTab" style="display:none;">
+    <div class="summary-block" id="summaryBlock"></div>
+    <button class="btn-copy" onclick="copyAll()">Copy to clipboard</button>
+    <button class="btn-secondary" onclick="openSheet()">Open Google Sheet ↗</button>
+    <button class="btn-danger" onclick="disconnect()">Disconnect sheet</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── CONFIG ──────────────────────────────────────────
+  let SCRIPT_URL = localStorage.getItem('masraf_url') || '';
+  let rate = 90000;
+  let entries = []; // [{id, date, cat, amt}]
+  let saving = false;
+
+  // ── SETUP ────────────────────────────────────────────
+  function saveUrl() {
+    const url = document.getElementById('urlInput').value.trim();
+    if (!url.startsWith('https://script.google.com')) {
+      toast('Please paste a valid Apps Script URL', true); return;
+    }
+    localStorage.setItem('masraf_url', url);
+    SCRIPT_URL = url;
+    startApp();
+  }
+
+  function disconnect() {
+    if (!confirm('Disconnect this sheet? Your data stays in Google Sheets.')) return;
+    localStorage.removeItem('masraf_url');
+    location.reload();
+  }
+
+  function openSheet() {
+    window.open('https://docs.google.com/spreadsheets', '_blank');
+  }
+
+  // ── INIT ─────────────────────────────────────────────
+  if (SCRIPT_URL) {
+    startApp();
+  } else {
+    document.getElementById('setupScreen').style.display = 'flex';
+  }
+
+  function startApp() {
+    document.getElementById('setupScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    buildDaySelector();
+    loadRate().then(() => loadEntries());
+    document.getElementById('rateInput').addEventListener('change', e => {
+      rate = parseInt(e.target.value) || 90000;
+      saveRate();
+      render();
+    });
+    document.getElementById('catIn').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('amtIn').focus(); });
+    document.getElementById('amtIn').addEventListener('keydown', e => { if(e.key==='Enter') addEntry(); });
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+  }
+
+  // ── DAY SELECTOR ─────────────────────────────────────
+  function buildDaySelector() {
+    const sel = document.getElementById('dayIn');
+    const today = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    for (let i = 0; i < 30; i++) {
+      const d = new Date(today); d.setDate(today.getDate() - i);
+      const key = pad(d.getDate()) + '/' + pad(d.getMonth()+1);
+      const o = document.createElement('option'); o.value = key; o.textContent = key;
+      sel.appendChild(o);
+    }
+  }
+
+  // ── API CALLS ─────────────────────────────────────────
+  function setSyncDot(state) {
+    const dot = document.getElementById('syncDot');
+    dot.className = 'sync-dot ' + state;
+  }
+
+  async function apiGet(params) {
+    const url = SCRIPT_URL + '?' + new URLSearchParams(params);
+    const res = await fetch(url);
+    return res.json();
+  }
+
+  async function apiPost(body) {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(body)
+    });
+    return res.json();
+  }
+
+  async function loadRate() {
+    try {
+      const data = await apiGet({ action: 'getRate' });
+      rate = data.rate || 90000;
+      document.getElementById('rateInput').value = rate;
+    } catch(e) {}
+  }
+
+  async function saveRate() {
+    try { await apiPost({ action: 'setRate', rate }); } catch(e) {}
+  }
+
+  async function loadEntries() {
+    setSyncDot('syncing');
+    try {
+      const data = await apiGet({ action: 'getAll' });
+      entries = data.entries || [];
+      setSyncDot('synced');
+      render();
+    } catch(e) {
+      setSyncDot('error');
+      toast('Could not load data — check connection', true);
+      document.getElementById('entriesList').innerHTML = '<div class="empty"><div class="empty-icon">⚠</div>Could not connect.<br>Check your URL in README.</div>';
+    }
+  }
+
+  async function addEntry() {
+    const cat = document.getElementById('catIn').value.trim();
+    const amt = parseInt(document.getElementById('amtIn').value);
+    const date = document.getElementById('dayIn').value;
+    if (!cat || !amt || amt <= 0) { toast('Fill category & amount', true); return; }
+    if (saving) return;
+    saving = true;
+    document.getElementById('addBtn').disabled = true;
+    setSyncDot('syncing');
+    try {
+      const res = await apiPost({ action: 'add', cat, amt, date });
+      if (res.ok) {
+        entries.push({ id: res.id, date, cat, amt });
+        document.getElementById('catIn').value = '';
+        document.getElementById('amtIn').value = '';
+        document.getElementById('catIn').focus();
+        setSyncDot('synced');
+        toast('Saved to Google Sheets ✓');
+        render();
+      } else {
+        throw new Error(res.error);
+      }
+    } catch(e) {
+      setSyncDot('error');
+      toast('Failed to save — try again', true);
+    }
+    saving = false;
+    document.getElementById('addBtn').disabled = false;
+  }
+
+  async function deleteEntry(id) {
+    setSyncDot('syncing');
+    try {
+      await apiPost({ action: 'delete', id });
+      entries = entries.filter(e => e.id != id);
+      setSyncDot('synced');
+      render();
+    } catch(e) {
+      setSyncDot('error');
+      toast('Failed to delete', true);
+    }
+  }
+
+  // ── RENDER ────────────────────────────────────────────
+  const fmt = n => Number(n).toLocaleString();
+  const toUsd = n => (n / rate).toFixed(2);
+
+  function groupByDay() {
+    const groups = {};
+    entries.forEach(e => {
+      if (!groups[e.date]) groups[e.date] = [];
+      groups[e.date].push(e);
+    });
+    return groups;
+  }
+
+  function sortedDays(groups) {
+    return Object.keys(groups).sort((a, b) => {
+      const [da,ma] = a.split('/').map(Number), [db,mb] = b.split('/').map(Number);
+      return (mb*100+db) - (ma*100+da);
+    });
+  }
+
+  function render() {
+    const list = document.getElementById('entriesList');
+    const groups = groupByDay();
+    const days = sortedDays(groups);
+    if (!days.length) {
+      list.innerHTML = '<div class="empty"><div class="empty-icon">💸</div>No expenses yet.<br>Add your first one above.</div>';
+    } else {
+      list.innerHTML = days.map(day => {
+        const dayEntries = groups[day];
+        const total = dayEntries.reduce((s,e)=>s+Number(e.amt),0);
+        return `<div class="day-card">
+          <div class="day-head">
+            <span class="day-date">${day}</span>
+            <span class="day-sum"><b>${fmt(total)} LL</b> = ${toUsd(total)} $</span>
+          </div>
+          ${dayEntries.map(e=>`
+            <div class="entry">
+              <span class="entry-name">${e.cat}</span>
+              <span class="entry-amt">${fmt(e.amt)}</span>
+              <button class="entry-del" onclick="deleteEntry('${e.id}')">×</button>
+            </div>`).join('')}
+        </div>`;
+      }).join('');
+    }
+  }
+
+  function renderSummary() {
+    const groups = groupByDay();
+    const days = sortedDays(groups).slice().reverse();
+    const block = document.getElementById('summaryBlock');
+    if (!days.length) { block.innerHTML = '<div class="empty" style="padding:32px">No data yet.</div>'; block._text=''; return; }
+    const grand = entries.reduce((s,e)=>s+Number(e.amt),0);
+    const today = new Date();
+    const month = (() => { const [d,m] = days[days.length-1].split('/'); return m+'/'+today.getFullYear(); })();
+    let txt = `Spending ${month}\n\n`;
+    days.forEach(day => {
+      const dayEntries = groups[day];
+      const total = dayEntries.reduce((s,e)=>s+Number(e.amt),0);
+      txt += `${day}:\n`;
+      dayEntries.forEach(e => { txt += `${e.cat}  ${fmt(e.amt)}\n`; });
+      txt += `Total: ${fmt(total)} L.L. = ${toUsd(total)} $\n\n`;
+    });
+    block._text = txt.trim();
+    block.innerHTML = `
+      <div class="summary-header">
+        <span class="summary-title">This month</span>
+        <span class="grand-total"><span class="ll">${fmt(grand)} LL</span> <span class="usd">= ${toUsd(grand)} $</span></span>
+      </div>
+      <div class="summary-text">${txt.trim()}</div>`;
+  }
+
+  function copyAll() {
+    const txt = document.getElementById('summaryBlock')._text || '';
+    if (!txt) { toast('No data to copy', true); return; }
+    navigator.clipboard.writeText(txt)
+      .then(()=>toast('Copied to clipboard!'))
+      .catch(()=>{ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); toast('Copied!'); });
+  }
+
+  function switchTab(t) {
+    document.getElementById('logTab').style.display = t==='log' ? 'flex' : 'none';
+    document.getElementById('summaryTab').style.display = t==='summary' ? 'flex' : 'none';
+    document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', (i===0&&t==='log')||(i===1&&t==='summary')));
+    if (t==='summary') renderSummary();
+  }
+
+  function toast(msg, isErr=false) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast' + (isErr?' error-toast':'') + ' show';
+    setTimeout(()=>el.className='toast'+(isErr?' error-toast':''), 2500);
+  }
+</script>
+</body>
+</html>
