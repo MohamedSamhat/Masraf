@@ -67,7 +67,7 @@
 
       /* Log tab: form on left, entries scrolling on right */
       #logTab { flex-direction: row; gap: 20px; align-items: flex-start; padding: 20px 24px; }
-      .add-form { width: 360px; flex-shrink: 0; position: sticky; top: 0; max-height: calc(100vh - 80px); overflow-y: auto; }
+      .add-form { width: 420px; flex-shrink: 0; position: sticky; top: 0; max-height: calc(100vh - 80px); overflow-y: auto; }
       .add-form .inp { font-size: 13px; padding: 8px 10px; }
       .add-form .btn-add { font-size: 13px; padding: 9px; }
       .add-form .cur-btn { font-size: 9px; }
@@ -273,14 +273,48 @@
     .income-total b { color: var(--text); }
 
     /* BALANCE CARD (in summary) */
-    .balance-card { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface2); }
+    .balance-card { display: grid; grid-template-columns: repeat(var(--bal-cols, 3), 1fr); gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--surface2); }
     .bal-item { display: flex; flex-direction: column; gap: 3px; }
     .bal-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
     .bal-ll { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--text); }
     .bal-usd { font-family: var(--mono); font-size: 10px; color: var(--muted); }
     .bal-item.income .bal-ll { color: var(--accent2); }
+    .bal-item.savings .bal-ll { color: #a060f0; }
     .bal-item.net.positive .bal-ll { color: var(--accent); }
     .bal-item.net.negative .bal-ll { color: var(--danger); }
+
+    /* MONTH OVERVIEW CARD (income + scheduled, top of entries list) */
+    .month-overview { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; animation: fadeUp 0.2s ease; }
+    .overview-section { padding: 8px 14px; border-bottom: 1px solid var(--border); }
+    .overview-section:last-child { border-bottom: none; }
+    .overview-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; }
+    .overview-section-label.inc-label { color: var(--accent2); }
+    .overview-section-label.sched-label { color: #f0a060; }
+    .overview-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; font-size: 13px; }
+    .overview-row-desc { color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
+    .overview-row-amt { display: flex; flex-direction: column; align-items: flex-end; font-family: var(--mono); white-space: nowrap; flex-shrink: 0; }
+    .overview-row-amt .ov-ll { font-size: 12px; }
+    .overview-row-amt .ov-usd { font-size: 10px; color: var(--accent); }
+    .overview-row-amt.inc .ov-ll { color: var(--accent2); }
+    .overview-row-amt.sched .ov-ll { color: #f0a060; }
+    .overview-row.spent { opacity: 0.42; }
+    .overview-row.spent .overview-row-amt { color: var(--muted); }
+    .overview-row .sched-spent-badge { font-size: 10px; color: var(--muted); margin-left: 5px; }
+
+    /* SCHEDULED-SPENT ENTRY (in spending day card) */
+    .entry.from-scheduled { border-left: 3px solid #f0a060; padding-left: 11px; background: rgba(240,160,96,0.05); }
+    .entry.from-scheduled .entry-name { color: #f0a060; }
+    .entry.from-scheduled .entry-ll  { color: #f0a060; opacity: 0.8; }
+
+    /* PLANNED BALANCE (in summary) */
+    .planned-balance-card { padding: 10px 16px; border-bottom: 1px solid var(--border); background: rgba(240,160,96,0.07); display: flex; flex-direction: column; gap: 4px; }
+    .planned-balance-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #f0a060; margin-bottom: 2px; }
+    .planned-bal-row { display: flex; justify-content: space-between; align-items: center; }
+    .planned-bal-label { font-size: 11px; color: var(--muted); }
+    .planned-bal-amt { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+    .planned-bal-amt.orange { color: #f0a060; }
+    .planned-bal-amt.positive { color: var(--accent); }
+    .planned-bal-amt.negative { color: var(--danger); }
 
     /* SCHEDULED SECTION */
     .scheduled-section { border-top: 1px solid var(--border); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
@@ -310,10 +344,61 @@
     .modal-item-name { color: #f0a060; }
     .modal-amount { font-family: var(--mono); font-size: 18px; font-weight: 700; color: #f0a060; }
     .modal-sub { font-size: 12px; color: var(--muted); }
-    .modal-actions { display: flex; gap: 10px; }
+    .modal-actions { display: flex; gap: 10px; width: 100%; }
+    .modal-actions .action-btn { min-width: 0; width: auto; flex-shrink: 0; margin: 0; padding: 9px 16px; }
     .modal-actions .btn-confirm { flex: 1; background: #f0a060; color: #0f0f0f; border: none; border-radius: 10px; font-family: var(--sans); font-size: 14px; font-weight: 800; padding: 11px; cursor: pointer; transition: opacity 0.15s, transform 0.12s; }
     .modal-actions .btn-confirm:hover { opacity: 0.85; }
     .modal-actions .btn-confirm:active { transform: scale(0.97); }
+    .modal-actions .btn-confirm-withdraw { flex: 1; background: #a060f0; color: #fff; border: none; border-radius: 10px; font-family: var(--sans); font-size: 14px; font-weight: 800; padding: 11px; cursor: pointer; transition: opacity 0.15s, transform 0.12s; }
+    .modal-actions .btn-confirm-withdraw:hover { opacity: 0.85; }
+    .modal-actions .btn-confirm-withdraw:active { transform: scale(0.97); }
+
+    /* SAVINGS SECTION */
+    .savings-section { border-top: 1px solid var(--border); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .savings-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #a060f0; }
+    .btn-add-savings { background: #a060f0 !important; color: #fff !important; margin-top: 2px; }
+    .btn-add-savings:hover { box-shadow: 0 4px 18px rgba(160,96,240,0.28) !important; }
+    .savings-list { display: flex; flex-direction: column; }
+    .savings-entry { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .savings-entry:last-child { border-bottom: none; }
+    .savings-entry.withdrawn { opacity: 0.5; }
+    .savings-desc { flex: 1; font-size: 13px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .savings-amt { font-family: var(--mono); font-size: 12px; color: #a060f0; white-space: nowrap; }
+    .savings-entry.withdrawn .savings-amt { color: var(--muted); }
+    .savings-withdrawn-label { font-family: var(--mono); font-size: 10px; color: var(--muted); white-space: nowrap; }
+    .btn-withdraw { background: #a060f0; border: none; border-radius: 6px; color: #fff; font-family: var(--sans); font-size: 10px; font-weight: 700; padding: 4px 10px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: opacity 0.15s; }
+    .btn-withdraw:hover { opacity: 0.82; }
+    .savings-month-picker { display: flex; gap: 6px; }
+    .savings-month-picker #savMonthIn { flex: 1; }
+    .savings-month-picker #savYearIn { width: 76px; flex-shrink: 0; font-family: var(--mono); appearance: textfield; -moz-appearance: textfield; }
+    .savings-month-picker #savYearIn::-webkit-outer-spin-button,
+    .savings-month-picker #savYearIn::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    #withdrawModalYearIn::-webkit-outer-spin-button,
+    #withdrawModalYearIn::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    #rateInput::-webkit-outer-spin-button,
+    #rateInput::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    #rateInput { appearance: textfield; -moz-appearance: textfield; }
+
+    /* SAVINGS TOTAL BAR */
+    .savings-total-bar { display:flex; align-items:center; gap:8px; padding:8px 0 2px; border-top:1px solid var(--border); margin-top:4px; }
+    .savings-total-bar .savings-total-info { flex:1; min-width:0; }
+    .savings-total-bar .savings-total-label { font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#a060f0;margin-bottom:1px; }
+    .savings-total-bar .savings-total-amt { font-family:var(--mono);font-size:12px;color:#a060f0;font-weight:700; }
+    .savings-total-bar .savings-total-usd { font-family:var(--mono);font-size:10px;color:var(--muted); }
+
+    /* SAVINGS OVERVIEW ROW */
+    .overview-section-label.sav-label { color: #a060f0; }
+    .overview-row-amt.sav .ov-ll { color: #a060f0; }
+
+    /* SAVINGS SUMMARY CARD */
+    .savings-card { padding: 10px 16px; border-bottom: 1px solid var(--border); background: rgba(160,96,240,0.07); display: flex; flex-direction: column; gap: 4px; }
+    .savings-card-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #a060f0; margin-bottom: 2px; }
+    .savings-card-row { display: flex; justify-content: space-between; align-items: center; }
+    .savings-card-label { font-size: 11px; color: var(--muted); }
+    .savings-card-amt { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+    .savings-card-amt.purple { color: #a060f0; }
+    .savings-card-amt.positive { color: var(--accent); }
+    .savings-card-amt.negative { color: var(--danger); }
   </style>
 </head>
 <body>
@@ -398,6 +483,37 @@
           <div id="incomeList"></div>
           <div class="income-total" id="incomeTotalEl"></div>
         </div>
+        <!-- Scheduled section -->
+        <div class="scheduled-section">
+          <div class="scheduled-section-header">
+            <span class="scheduled-section-title">Scheduled</span>
+          </div>
+          <div class="income-month-picker">
+            <select class="inp" id="planMonthIn"></select>
+            <input class="inp" id="planYearIn" type="number" min="2000" max="2099" placeholder="Year" />
+          </div>
+          <div id="scheduledRowsDiv"></div>
+          <div class="row-actions">
+            <button class="btn-add-row" onclick="addScheduledRow()">+ row</button>
+          </div>
+          <button class="btn-add btn-add-planned" id="planAddBtn" onclick="addAllScheduled()">+ Save Scheduled</button>
+          <div class="planned-list" id="scheduledList"></div>
+        </div>
+        <!-- Savings section -->
+        <div class="savings-section">
+          <div><span class="savings-section-title">Savings</span></div>
+          <div class="savings-month-picker">
+            <select class="inp" id="savMonthIn"></select>
+            <input class="inp" id="savYearIn" type="number" min="2000" max="2099" placeholder="Year" />
+          </div>
+          <div id="savingsRowsDiv"></div>
+          <div class="row-actions">
+            <button class="btn-add-row" onclick="addSavingsRow()">+ row</button>
+          </div>
+          <button class="btn-add btn-add-savings" id="savAddBtn" onclick="addAllSavings()">+ Add Savings</button>
+          <div class="savings-list" id="savingsList"></div>
+          <div id="savingsTotalEl"></div>
+        </div>
       </div>
 
       <!-- Mobile month filter -->
@@ -422,6 +538,44 @@
   </div>
 </div>
 
+<!-- Spend modal -->
+<div id="spendModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-title">Spend: <span class="modal-item-name" id="modalItemName"></span></div>
+    <div class="modal-amount" id="modalItemAmt"></div>
+    <div class="modal-sub">Choose date for this month:</div>
+    <select class="inp" id="modalDayIn"></select>
+    <div class="modal-actions">
+      <button class="btn-confirm" onclick="confirmSpend()">Confirm Spend</button>
+      <button class="action-btn muted" onclick="closeSpendModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Withdraw modal -->
+<div id="withdrawModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-title">Withdraw: <span style="color:#a060f0" id="withdrawModalItemName"></span></div>
+    <div class="modal-amount" style="color:#a060f0" id="withdrawModalItemAmt"></div>
+    <div class="modal-sub">Amount to withdraw:</div>
+    <div class="amt-wrap" style="margin-bottom:2px">
+      <input class="inp" id="withdrawAmtIn" type="text" inputmode="decimal" placeholder="0" style="font-family:var(--mono)" />
+      <button class="cur-row-btn" id="withdrawCurBtn" onclick="toggleWithdrawCur()" style="border-radius:0 10px 10px 0;border-left:none;height:auto">LL</button>
+    </div>
+    <div style="font-size:11px;color:var(--muted)" id="withdrawAmtHint"></div>
+    <div class="modal-sub">Date of withdrawal:</div>
+    <div style="display:flex;gap:6px">
+      <select class="inp" id="withdrawModalDayIn" style="flex:0 0 68px"></select>
+      <select class="inp" id="withdrawModalMonthIn" style="flex:1"></select>
+      <input class="inp" id="withdrawModalYearIn" type="number" min="2000" max="2099" style="flex:0 0 74px;font-family:var(--mono);appearance:textfield;-moz-appearance:textfield" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-confirm-withdraw" onclick="confirmWithdraw()">Confirm Withdraw</button>
+      <button class="action-btn muted" onclick="closeWithdrawModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -431,11 +585,73 @@
   let incomeEntries = [];
   let entryRows = [{ cat: '', amt: '', cur: 'LL' }];
   let incomeRows = [{ desc: '', amt: '', cur: 'LL' }];
+  let scheduledEntries = [];
+  let scheduledRows = [{ desc: '', amt: '', cur: 'LL' }];
+  let savingsEntries = [];      // status='saving' rows
+  let withdrawalEntries = [];   // status='withdrawal' rows
+  let savingsRows = [{ desc: '', amt: '', cur: 'LL' }];
+  let pendingSpendId = null;
+  let pendingSpendData = null;
+  let pendingWithdrawId = null;
+  let pendingWithdrawData = null;
+  let withdrawCur = 'LL';
   let saving = false;
   let activeMonth = '';
   let summaryText = '';
   const pad = n => String(n).padStart(2,'0');
   const escHtml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  // ── NUMBER FORMATTING ─────────────────────────────────
+  function formatLLInput(el) {
+    const pos = el.selectionStart;
+    const lenBefore = el.value.length;
+    const raw = el.value.replace(/[^0-9]/g, '');
+    if (!raw) { el.value = ''; return; }
+    const formatted = parseInt(raw, 10).toLocaleString('en-US');
+    el.value = formatted;
+    const newPos = Math.max(0, pos + (formatted.length - lenBefore));
+    try { el.setSelectionRange(newPos, newPos); } catch(e) {}
+  }
+  function formatUSDInput(el) {
+    let val = el.value.replace(/[^0-9.]/g, '');
+    const parts = val.split('.');
+    if (parts.length > 2) val = parts[0] + '.' + parts.slice(1).join('');
+    if (parts[1] && parts[1].length > 2) val = parts[0] + '.' + parts[1].slice(0, 2);
+    el.value = val;
+  }
+  function formatUSDBlur(el) {
+    const v = parseFloat(el.value);
+    if (!isNaN(v)) el.value = v.toFixed(2);
+  }
+  function getAmtValue(el) {
+    return parseFloat(String(el ? el.value : '').replace(/,/g, '')) || 0;
+  }
+  function parseAmt(str) {
+    return parseFloat(String(str).replace(/,/g, '')) || 0;
+  }
+  // Convert "MM/YYYY" to a sortable number for comparison
+  function mkToNum(mk) {
+    const [mm, yy] = String(mk).split('/');
+    return parseInt(yy) * 100 + parseInt(mm);
+  }
+
+  // Normalize month key from any format the server might return to "MM/YYYY"
+  function normMk(v) {
+    v = String(v || '').trim();
+    // Already MM/YYYY or M/YYYY
+    if (/^\d{1,2}\/\d{4}$/.test(v)) {
+      const p = v.split('/');
+      return p[0].padStart(2, '0') + '/' + p[1];
+    }
+    // Looks like a date string (Date.toString() from Apps Script) — parse it
+    if (v.length > 7) {
+      const d = new Date(v);
+      if (!isNaN(d.getTime())) {
+        return String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+      }
+    }
+    return v;
+  }
 
   // ── SETUP ─────────────────────────────────────────────
   function saveUrl() {
@@ -461,14 +677,18 @@
     document.getElementById('app').style.display = '';
     buildDaySelector();
     buildIncomeMonthPicker();
+    buildScheduledMonthPicker();
+    buildSavingsMonthPicker();
     renderRows();
     renderIncomeRows();
+    renderScheduledRows();
+    renderSavingsRows();
     document.getElementById('rateInput').addEventListener('change', e => {
       rate = parseInt(e.target.value) || 90000;
       saveRate(); updateTotal(); render(); renderIncomeSection(); if (summaryVisible()) renderSummary();
     });
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-    loadRate().then(() => { loadEntries(); loadIncome(); });
+    loadRate().then(() => { loadEntries(); loadIncome(); loadScheduled(); loadSavings(); });
   }
 
   function summaryVisible() {
@@ -492,7 +712,7 @@
       const isLL = row.cur !== '$';
       return `<div class="entry-row">
         <input class="inp row-cat" type="text" placeholder="Category" value="${escHtml(row.cat)}" autocomplete="off" />
-        <input class="inp row-amt" type="number" placeholder="${isLL ? '0' : '0.00'}" min="0" step="${isLL ? '1000' : '0.01'}" value="${escHtml(row.amt)}" />
+        <input class="inp row-amt" type="text" inputmode="decimal" placeholder="${isLL ? '0' : '0.00'}" value="${escHtml(row.amt)}" />
         <button class="cur-row-btn${row.cur === '$' ? ' usd' : ''}" onclick="toggleEntryRowCur(${i})">${row.cur}</button>
         ${entryRows.length > 1
           ? `<button class="row-del-btn" onclick="removeRow(${i})">×</button>`
@@ -506,7 +726,12 @@
       el.addEventListener('keydown', e => { if (e.key === 'Enter') amts[i]?.focus(); });
     });
     amts.forEach((el, i) => {
-      el.addEventListener('input',   () => { entryRows[i].amt = el.value; updateTotal(); });
+      el.addEventListener('input', () => {
+        if (entryRows[i]?.cur === '$') formatUSDInput(el); else formatLLInput(el);
+        entryRows[i].amt = el.value;
+        updateTotal();
+      });
+      el.addEventListener('blur', () => { if (entryRows[i]?.cur === '$') formatUSDBlur(el); });
       el.addEventListener('keydown', e => {
         if (e.key === 'Enter') { if (i === entryRows.length - 1) addRow(); else cats[i + 1]?.focus(); }
       });
@@ -548,7 +773,7 @@
     const totalEl = document.getElementById('formTotal');
     let totalLL = 0;
     document.querySelectorAll('#entryRowsDiv .entry-row').forEach((rowEl, i) => {
-      const v = parseFloat(rowEl.querySelector('.row-amt')?.value);
+      const v = getAmtValue(rowEl.querySelector('.row-amt'));
       const cur = entryRows[i]?.cur || 'LL';
       if (v > 0) totalLL += (cur === 'LL' ? v : Math.round(v * rate));
     });
@@ -641,7 +866,12 @@
     return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)-1] + ' ' + y;
   }
   function allMonths() {
-    const set = new Set(entries.map(e => getMonthKey(e.date)));
+    const set = new Set();
+    entries.forEach(e => set.add(getMonthKey(e.date)));
+    incomeEntries.forEach(e => set.add(getMonthKey(e.date)));
+    scheduledEntries.forEach(e => set.add(e.month));
+    savingsEntries.forEach(e => set.add(e.month));
+    withdrawalEntries.forEach(e => e.date && set.add(getMonthKey(e.date)));
     return [...set].sort((a,b) => {
       const [ma,ya]=a.split('/').map(Number), [mb,yb]=b.split('/').map(Number);
       return (yb*100+mb)-(ya*100+ma);
@@ -656,10 +886,20 @@
       const incY = document.getElementById('incYearIn');
       if (incM) incM.value = m;
       if (incY) incY.value = y;
+      const planM = document.getElementById('planMonthIn');
+      const planY = document.getElementById('planYearIn');
+      if (planM) planM.value = m;
+      if (planY) planY.value = y;
+      const savM = document.getElementById('savMonthIn');
+      const savY = document.getElementById('savYearIn');
+      if (savM) savM.value = m;
+      if (savY) savY.value = y;
     }
     buildSidebar();
     render();
     renderIncomeSection();
+    renderScheduledSection();
+    renderSavingsSection();
     if (summaryVisible()) renderSummary();
   }
 
@@ -737,7 +977,7 @@
   async function addEntries() {
     syncRowsFromDOM();
     const date = getSelectedDate();
-    const valid = entryRows.filter(r => r.cat.trim() && parseFloat(r.amt) > 0);
+    const valid = entryRows.filter(r => r.cat.trim() && parseAmt(r.amt) > 0);
     if (!valid.length) { toast('Fill at least one category & amount', true); return; }
     if (saving) return;
     saving = true;
@@ -745,17 +985,36 @@
     setSyncDot('syncing');
     const batch = valid.map(r => ({
       cat: r.cat.trim(),
-      amt: r.cur === 'LL' ? Math.round(parseFloat(r.amt)) : Math.round(parseFloat(r.amt) * rate),
+      amt: r.cur === 'LL' ? Math.round(parseAmt(r.amt)) : Math.round(parseAmt(r.amt) * rate),
       date
     }));
     try {
-      const res = await apiPost({ action: 'addBatch', entries: batch });
+      // Merge same date + same category into one entry
+      const toDelete = [];
+      const finalBatch = [];
+      for (const item of batch) {
+        const existing = entries.find(e =>
+          e.date === item.date && e.cat.toLowerCase() === item.cat.toLowerCase()
+        );
+        if (existing) {
+          toDelete.push(existing.id);
+          finalBatch.push({ cat: item.cat, date: item.date, amt: Number(existing.amt) + item.amt });
+        } else {
+          finalBatch.push(item);
+        }
+      }
+      for (const delId of toDelete) {
+        await apiPost({ action: 'delete', id: delId });
+        entries = entries.filter(e => String(e.id) !== String(delId));
+      }
+      const res = await apiPost({ action: 'addBatch', entries: finalBatch });
       if (res.ok) {
-        res.ids.forEach((id, i) => entries.push({ id, date, cat: batch[i].cat, amt: batch[i].amt }));
-        entryRows = [{ cat: '', amt: '' }];
+        res.ids.forEach((id, i) => entries.push({ id, date: finalBatch[i].date, cat: finalBatch[i].cat, amt: finalBatch[i].amt, usd: (finalBatch[i].amt / rate).toFixed(2) }));
+        entryRows = [{ cat: '', amt: '', cur: 'LL' }];
         renderRows(false);
         setSyncDot('synced');
-        toast(`Saved ${batch.length} entr${batch.length > 1 ? 'ies' : 'y'} ✓`);
+        const merged = toDelete.length;
+        toast(`Saved ${finalBatch.length} entr${finalBatch.length > 1 ? 'ies' : 'y'}${merged ? ` (${merged} merged)` : ''} ✓`);
         const mk = getMonthKey(date);
         if (activeMonth !== 'all' && activeMonth !== mk) activeMonth = mk;
         buildSidebar(); buildMobileMonthSelect(); render(); renderSummary();
@@ -807,7 +1066,7 @@
       const isLL = row.cur !== '$';
       return `<div class="entry-row">
         <input class="inp row-cat" type="text" placeholder="Source" value="${escHtml(row.desc)}" autocomplete="off" />
-        <input class="inp row-amt" type="number" placeholder="${isLL ? '0' : '0.00'}" min="0" step="${isLL ? '1000' : '0.01'}" value="${escHtml(row.amt)}" />
+        <input class="inp row-amt" type="text" inputmode="decimal" placeholder="${isLL ? '0' : '0.00'}" value="${escHtml(row.amt)}" />
         <button class="cur-row-btn${row.cur === '$' ? ' usd' : ''}" onclick="toggleIncRow(${i})">${row.cur}</button>
         ${incomeRows.length > 1
           ? `<button class="row-del-btn" onclick="removeIncRow(${i})">×</button>`
@@ -821,7 +1080,11 @@
       el.addEventListener('keydown', e => { if (e.key === 'Enter') amts[i]?.focus(); });
     });
     amts.forEach((el, i) => {
-      el.addEventListener('input',   () => { incomeRows[i].amt = el.value; });
+      el.addEventListener('input', () => {
+        if (incomeRows[i]?.cur === '$') formatUSDInput(el); else formatLLInput(el);
+        incomeRows[i].amt = el.value;
+      });
+      el.addEventListener('blur', () => { if (incomeRows[i]?.cur === '$') formatUSDBlur(el); });
       el.addEventListener('keydown', e => {
         if (e.key === 'Enter') { if (i === incomeRows.length - 1) addIncomeRow(); else cats[i + 1]?.focus(); }
       });
@@ -861,6 +1124,7 @@
     try {
       const d = await apiGet({ action: 'getIncome' });
       incomeEntries = (d.entries || []).map(e => ({ ...e, date: normalizeDate(e.date) }));
+      buildSidebar(); buildMobileMonthSelect();
       renderIncomeSection();
     } catch(e) {}
   }
@@ -887,21 +1151,23 @@
     const mk = getIncomeMonthKey();
     const [mm, yy] = mk.split('/');
     const date = `01/${mm}/${yy}`;
-    const valid = incomeRows.filter(r => r.desc.trim() && parseFloat(r.amt) > 0);
+    const valid = incomeRows.filter(r => r.desc.trim() && parseAmt(r.amt) > 0);
     if (!valid.length) { toast('Fill at least one source & amount', true); return; }
     setSyncDot('syncing');
     try {
       for (let i = 0; i < valid.length; i++) {
-        const amtLL = valid[i].cur === 'LL' ? Math.round(parseFloat(valid[i].amt)) : Math.round(parseFloat(valid[i].amt) * rate);
+        const amtLL = valid[i].cur === 'LL' ? Math.round(parseAmt(valid[i].amt)) : Math.round(parseAmt(valid[i].amt) * rate);
         const res = await apiPost({ action: 'addIncome', desc: valid[i].desc.trim(), amt: amtLL, date });
-        if (res.ok) incomeEntries.push({ id: res.id, date, desc: valid[i].desc.trim(), amt: amtLL });
+        if (res.ok) incomeEntries.push({ id: res.id, date, desc: valid[i].desc.trim(), amt: amtLL, usd: (amtLL / rate).toFixed(2) });
         else throw new Error(res.error);
       }
       incomeRows = [{ desc: '', amt: '', cur: 'LL' }];
       renderIncomeRows(false);
       setSyncDot('synced');
       toast(`${valid.length} income entr${valid.length > 1 ? 'ies' : 'y'} saved ✓`);
+      buildSidebar(); buildMobileMonthSelect();
       renderIncomeSection();
+      render();
       if (summaryVisible()) renderSummary();
     } catch(e) { setSyncDot('error'); toast('Failed to save income', true); }
   }
@@ -913,14 +1179,29 @@
       incomeEntries = incomeEntries.filter(e => String(e.id) !== String(id));
       setSyncDot('synced');
       renderIncomeSection();
+      render();
     } catch(e) { setSyncDot('error'); toast('Failed to delete', true); }
   }
 
   async function deleteEntry(id) {
     setSyncDot('syncing');
     try {
-      await apiPost({action:'delete', id});
-      entries = entries.filter(e => e.id != id);
+      await apiPost({ action: 'delete', id });
+      entries = entries.filter(e => String(e.id) !== String(id));
+
+      // If this spending came from a scheduled item, restore it to pending
+      const schedIdx = scheduledEntries.findIndex(e => String(e.spentEntryId) === String(id));
+      if (schedIdx !== -1) {
+        await apiPost({ action: 'restoreScheduled', id: scheduledEntries[schedIdx].id });
+        scheduledEntries[schedIdx].status = 'pending';
+        scheduledEntries[schedIdx].spentDate = '';
+        scheduledEntries[schedIdx].spentEntryId = '';
+        toast('Restored to scheduled ✓');
+        renderScheduledSection();
+      } else {
+        setSyncDot('synced');
+      }
+
       setSyncDot('synced');
       buildSidebar(); buildMobileMonthSelect(); render();
       if (summaryVisible()) renderSummary();
@@ -930,6 +1211,8 @@
   // ── RENDER ────────────────────────────────────────────
   const fmt = n => Number(n).toLocaleString();
   const toUsd = n => '$' + (n / rate).toFixed(2);
+  // Use stored USD for existing entries so rate changes don't retroactively alter them
+  const eUsd = e => (e && e.usd != null) ? '$' + parseFloat(e.usd).toFixed(2) : toUsd(e ? e.amt : 0);
 
   function filteredEntries() {
     return activeMonth === 'all' ? entries : entries.filter(e => getMonthKey(e.date) === activeMonth);
@@ -949,31 +1232,95 @@
     });
   }
 
+  function renderMonthOverview(mk) {
+    const monthIncome    = incomeEntries.filter(e => getMonthKey(e.date) === mk);
+    const monthScheduled = scheduledEntries.filter(e => e.month === mk);
+    const monthSavings   = savingsEntries.filter(e => e.month === mk);
+    if (!monthIncome.length && !monthScheduled.length && !monthSavings.length) return '';
+    let html = '<div class="month-overview">';
+    if (monthIncome.length) {
+      const totalIncome = monthIncome.reduce((s, e) => s + Number(e.amt), 0);
+      html += `<div class="overview-section">
+        <div class="overview-section-label inc-label">Income — ${fmt(totalIncome)} LL = ${toUsd(totalIncome)}</div>
+        ${monthIncome.map(e => `<div class="overview-row">
+          <span class="overview-row-desc">${escHtml(e.desc)}</span>
+          <span class="overview-row-amt inc"><span class="ov-ll">${fmt(e.amt)} LL</span><span class="ov-usd">${eUsd(e)}</span></span>
+        </div>`).join('')}
+      </div>`;
+    }
+    if (monthScheduled.length) {
+      const pendingTotal = monthScheduled.filter(e => e.status !== 'spent').reduce((s, e) => s + Number(e.amt), 0);
+      const allSpent = pendingTotal === 0;
+      html += `<div class="overview-section">
+        <div class="overview-section-label sched-label">Scheduled — ${allSpent ? 'all spent' : fmt(pendingTotal) + ' LL pending'}</div>
+        ${monthScheduled.map(e => `<div class="overview-row${e.status === 'spent' ? ' spent' : ''}">
+          <span class="overview-row-desc">${escHtml(e.desc)}${e.status === 'spent' ? `<span class="sched-spent-badge"> ✓${e.spentDate ? ' ' + e.spentDate : ''}</span>` : ''}</span>
+          <span class="overview-row-amt sched"><span class="ov-ll">${fmt(e.amt)} LL</span><span class="ov-usd">${toUsd(e.amt)}</span></span>
+        </div>`).join('')}
+      </div>`;
+    }
+    if (monthSavings.length) {
+      const netSavings = monthSavings.reduce((s, e) => s + Number(e.amt), 0);
+      html += `<div class="overview-section">
+        <div class="overview-section-label sav-label">Savings — ${fmt(netSavings)} LL = ${toUsd(netSavings)}</div>
+        ${monthSavings.map(e => `<div class="overview-row">
+          <span class="overview-row-desc">${escHtml(e.desc)}</span>
+          <span class="overview-row-amt sav"><span class="ov-ll">${fmt(e.amt)} LL</span><span class="ov-usd">${toUsd(e.amt)}</span></span>
+        </div>`).join('')}
+      </div>`;
+    }
+    return html + '</div>';
+  }
+
   function render() {
     const list = document.getElementById('entriesList');
     const filtered = filteredEntries();
+    const scheduledSpentIds = new Set(
+      scheduledEntries.filter(e => e.status === 'spent' && e.spentEntryId).map(e => String(e.spentEntryId))
+    );
+    // Merge withdrawal entries into day groups
     const groups = groupByDay(filtered);
+    const wFiltered = activeMonth === 'all'
+      ? withdrawalEntries
+      : withdrawalEntries.filter(e => e.date && getMonthKey(e.date) === activeMonth);
+    wFiltered.forEach(w => {
+      if (!w.date) return;
+      if (!groups[w.date]) groups[w.date] = [];
+      groups[w.date].push({ ...w, _isWithdrawal: true });
+    });
     const days = sortedDays(groups);
+    const overviewHtml = activeMonth !== 'all' ? renderMonthOverview(activeMonth) : '';
     if (!days.length) {
-      list.innerHTML = '<div class="empty"><div class="empty-icon">💸</div>No entries for this period.</div>';
+      list.innerHTML = overviewHtml + '<div class="empty"><div class="empty-icon">💸</div>No entries for this period.</div>';
       return;
     }
-    list.innerHTML = days.map(day => {
+    list.innerHTML = overviewHtml + days.map(day => {
       const dayE = groups[day];
-      const total = dayE.reduce((s,e)=>s+Number(e.amt),0);
+      const spendTotal = dayE.filter(e => !e._isWithdrawal).reduce((s,e)=>s+Number(e.amt),0);
       return `<div class="day-card">
         <div class="day-head">
           <span class="day-date">${day}</span>
-          <span class="day-sum"><b>${fmt(total)} LL</b> = ${toUsd(total)}</span>
+          <span class="day-sum"><b>${fmt(spendTotal)} LL</b> = ${toUsd(spendTotal)}</span>
         </div>
-        ${dayE.map(e=>`<div class="entry">
-          <span class="entry-name">${e.cat}</span>
-          <div class="entry-amts">
-            <span class="entry-ll">${fmt(e.amt)} LL</span>
-            <span class="entry-usd">${toUsd(e.amt)}</span>
-          </div>
-          <button class="entry-del" onclick="deleteEntry('${e.id}')">×</button>
-        </div>`).join('')}
+        ${dayE.map(e => {
+          if (e._isWithdrawal) return `<div class="entry" style="border-left:3px solid #a060f0;padding-left:11px;background:rgba(160,96,240,0.05)">
+            <span class="entry-name" style="color:#a060f0">↩ ${escHtml(e.desc)}</span>
+            <div class="entry-amts">
+              <span class="entry-ll" style="color:#a060f0">+${fmt(e.amt)} LL</span>
+              <span class="entry-usd" style="color:#a060f0">+${toUsd(e.amt)}</span>
+            </div>
+            <button class="entry-del" onclick="deleteWithdrawalEntry('${e.id}')">×</button>
+          </div>`;
+          const fromSched = e.fromScheduled || scheduledSpentIds.has(String(e.id));
+          return `<div class="entry${fromSched ? ' from-scheduled' : ''}">
+            <span class="entry-name">${escHtml(e.cat)}</span>
+            <div class="entry-amts">
+              <span class="entry-ll">${fmt(e.amt)} LL</span>
+              <span class="entry-usd">${eUsd(e)}</span>
+            </div>
+            <button class="entry-del" onclick="deleteEntry('${e.id}')">×</button>
+          </div>`;
+        }).join('')}
       </div>`;
     }).join('');
   }
@@ -981,43 +1328,104 @@
   function renderSummary() {
     const filtered = filteredEntries();
     const block = document.getElementById('summaryBlock');
-    if (!filtered.length) { block.innerHTML='<div class="empty" style="padding:32px">No data for this period.</div>'; summaryText=''; return; }
+    const months = allMonths();
+    // True empty: no data from any source
+    const hasAnyData = filtered.length || months.length;
+    if (!hasAnyData) { block.innerHTML='<div class="empty" style="padding:32px">No data for this period.</div>'; summaryText=''; return; }
     const grand = filtered.reduce((s,e)=>s+Number(e.amt),0);
+    // Build set of scheduled-spent entry IDs for orange highlighting
+    const schedSpentIds = new Set(
+      scheduledEntries.filter(e => e.status === 'spent' && e.spentEntryId).map(e => String(e.spentEntryId))
+    );
 
     if (activeMonth === 'all') {
-      // Group by month, each month gets its own card
-      const months = allMonths(); // sorted newest first
+      // Group by month, each month gets its own card (includes income/savings-only months)
+      const totalAllIncome  = incomeEntries.reduce((s,e)=>s+Number(e.amt),0);
+      const totalAllSavings = savingsEntries.reduce((s,e)=>s+Number(e.amt),0);
+      const allTimeBalance  = totalAllIncome - grand - totalAllSavings;
+      const now = new Date();
+      const currentMkNum = now.getFullYear() * 100 + now.getMonth() + 1;
       let txt = 'Spending — All Time\n\n';
       let html = `<div class="summary-header">
         <span class="summary-title">All Time</span>
-        <span class="grand-total"><span class="ll">${fmt(grand)} LL</span><span class="usd"> = ${toUsd(grand)}</span></span>
+        <span class="grand-total" style="color:${allTimeBalance>=0?'var(--accent)':'var(--danger)'}">
+          <span class="ll">${allTimeBalance>=0?'+':''}${fmt(allTimeBalance)} LL</span>
+          <span class="usd"> = ${(allTimeBalance/rate).toFixed(2)} $</span>
+        </span>
+      </div>
+      <div style="padding:4px 16px 8px;font-size:11px;color:var(--muted);font-family:var(--mono);display:flex;gap:14px;border-bottom:1px solid var(--border)">
+        <span>Spent: <b style="color:var(--text)">${fmt(grand)} LL</b></span>
+        <span style="color:#a060f0">Saved: <b>${fmt(totalAllSavings)} LL</b></span>
+        <span style="color:var(--accent2)">Income: <b>${fmt(totalAllIncome)} LL</b></span>
       </div>`;
+      if (totalAllSavings > 0) {
+        html += `<div style="padding:10px 16px;background:rgba(160,96,240,0.07);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#a060f0;margin-bottom:3px">Total Savings</div>
+            <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:#a060f0">${fmt(totalAllSavings)} LL <span style="font-size:11px;color:var(--muted)">= ${toUsd(totalAllSavings)}</span></div>
+          </div>
+          <button class="btn-withdraw" onclick="openTotalWithdrawModal()" style="flex-shrink:0">Withdraw</button>
+        </div>`;
+      }
       months.forEach(mk => {
         const mEntries = filtered.filter(e => getMonthKey(e.date) === mk);
-        if (!mEntries.length) return;
-        const mTotal = mEntries.reduce((s,e)=>s+Number(e.amt),0);
-        const groups = groupByDay(mEntries);
-        const days = sortedDays(groups);
+        const mTotal   = mEntries.reduce((s,e)=>s+Number(e.amt),0);
+        const mIncome  = incomeEntries.filter(e => getMonthKey(e.date) === mk).reduce((s,e)=>s+Number(e.amt),0);
+        const mSavings = savingsEntries.filter(e => e.month === mk);
+        const mNetSav  = mSavings.reduce((s,e)=>s+Number(e.amt),0);
+        const mkNum    = mkToNum(mk);
+        const mPending = mkNum >= currentMkNum
+          ? scheduledEntries.filter(e=>e.month===mk&&e.status!=='spent').reduce((s,e)=>s+Number(e.amt),0)
+          : 0;
         txt += `── ${getMonthLabel(mk)} ──\n`;
         let dayLines = '';
-        days.forEach(day => {
-          const dayE = groups[day];
-          const total = dayE.reduce((s,e)=>s+Number(e.amt),0);
-          txt += `${day}:\n`;
-          dayE.forEach(e => { txt += `  ${e.cat}  ${fmt(e.amt)}\n`; });
-          txt += `  Total: ${fmt(total)} L.L. = ${(total/rate).toFixed(2)} $\n`;
-          dayLines += `<div style="padding:6px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;">
-            <span style="color:var(--accent2);font-family:var(--mono)">${day}</span>
-            <span style="font-family:var(--mono);color:var(--muted)">${fmt(total)} LL <span style="color:var(--accent)">${toUsd(total)}</span></span>
-          </div>`;
-        });
+        if (mEntries.length) {
+          const groups = groupByDay(mEntries);
+          const days = sortedDays(groups);
+          days.forEach(day => {
+            const dayE = groups[day];
+            const total = dayE.reduce((s,e)=>s+Number(e.amt),0);
+            txt += `${day}:\n`;
+            dayE.forEach(e => { txt += `  ${e.cat}  ${fmt(e.amt)}\n`; });
+            txt += `  Total: ${fmt(total)} L.L. = ${(total/rate).toFixed(2)} $\n`;
+            dayLines += `<div style="padding:6px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;">
+              <span style="color:var(--accent2);font-family:var(--mono)">${day}</span>
+              <span style="font-family:var(--mono);color:var(--muted)">${fmt(total)} LL <span style="color:var(--accent)">${toUsd(total)}</span></span>
+            </div>`;
+          });
+        } else {
+          dayLines = `<div style="padding:6px 16px;font-size:12px;color:var(--muted);font-style:italic">No spending</div>`;
+        }
+        // Extra rows for income / savings / scheduled if present
+        let extraLines = '';
+        if (mIncome > 0) extraLines += `<div style="padding:4px 16px;display:flex;justify-content:space-between;font-size:12px;border-top:1px solid var(--border)">
+          <span style="color:var(--accent2)">Income</span>
+          <span style="font-family:var(--mono);color:var(--accent2)">${fmt(mIncome)} LL</span></div>`;
+        if (mNetSav > 0) extraLines += `<div style="padding:4px 16px;display:flex;justify-content:space-between;font-size:12px;">
+          <span style="color:#a060f0">Net saved</span>
+          <span style="font-family:var(--mono);color:#a060f0">−${fmt(mNetSav)} LL</span></div>`;
+        if (mPending > 0) extraLines += `<div style="padding:4px 16px;display:flex;justify-content:space-between;font-size:12px;">
+          <span style="color:#f0a060">Pending scheduled</span>
+          <span style="font-family:var(--mono);color:#f0a060">−${fmt(mPending)} LL</span></div>`;
+        if (mIncome > 0 || mNetSav > 0) {
+          const mBalance = mIncome - mTotal - mNetSav;
+          const mBalColor = mBalance >= 0 ? 'var(--accent)' : 'var(--danger)';
+          extraLines += `<div style="padding:5px 16px 6px;display:flex;justify-content:space-between;font-size:12px;border-top:1px solid var(--border)">
+            <span style="font-weight:700;color:var(--muted)">Balance</span>
+            <span style="font-family:var(--mono);font-weight:700;color:${mBalColor}">${mBalance>=0?'+':''}${fmt(mBalance)} LL <span style="font-size:11px;opacity:0.7">${mBalance>=0?'+':''}${(mBalance/rate).toFixed(2)} $</span></span></div>`;
+        }
+        if (mIncome > 0) {
+          const mNet = mIncome - mTotal - mNetSav;
+          txt += `Income: ${fmt(mIncome)} L.L.\n`;
+          txt += `Balance: ${mNet >= 0 ? '+' : ''}${fmt(mNet)} L.L.\n`;
+        }
         txt += `Month Total: ${fmt(mTotal)} L.L. = ${(mTotal/rate).toFixed(2)} $\n\n`;
         html += `<div style="border-bottom:1px solid var(--border)">
           <div style="padding:10px 16px;display:flex;justify-content:space-between;align-items:center;background:var(--surface2);">
             <span style="font-size:12px;font-weight:700;color:var(--text);letter-spacing:0.5px">${getMonthLabel(mk)}</span>
             <span style="font-family:var(--mono);font-size:12px"><span style="color:var(--text);font-weight:700">${fmt(mTotal)} LL</span> <span style="color:var(--accent)">${toUsd(mTotal)}</span></span>
           </div>
-          ${dayLines}
+          ${dayLines}${extraLines}
         </div>`;
       });
       summaryText = txt.trim();
@@ -1025,37 +1433,68 @@
     } else {
       // Single month — show day by day
       const label = getMonthLabel(activeMonth);
-      const groups = groupByDay(filtered);
-      const days = sortedDays(groups);
+      // Build day groups merging spending + withdrawals
+      const summGroups = groupByDay(filtered);
+      const wMonth = withdrawalEntries.filter(e => e.date && getMonthKey(e.date) === activeMonth);
+      wMonth.forEach(w => {
+        if (!summGroups[w.date]) summGroups[w.date] = [];
+        summGroups[w.date].push({ ...w, _isWithdrawal: true });
+      });
+      const days = sortedDays(summGroups);
       let txt = `Spending ${label}\n\n`;
       let dayLines = '';
       days.forEach(day => {
-        const dayE = groups[day];
-        const total = dayE.reduce((s,e)=>s+Number(e.amt),0);
+        const dayE = summGroups[day];
+        const spendE = dayE.filter(e => !e._isWithdrawal);
+        const total = spendE.reduce((s,e)=>s+Number(e.amt),0);
         txt += `${day}:\n`;
-        dayE.forEach(e => { txt += `  ${e.cat}  ${fmt(e.amt)}\n`; });
+        spendE.forEach(e => { txt += `  ${e.cat}  ${fmt(e.amt)}\n`; });
+        dayE.filter(e => e._isWithdrawal).forEach(w => { txt += `  ↩ ${w.desc}  +${fmt(w.amt)}\n`; });
         txt += `  Total: ${fmt(total)} L.L. = ${(total/rate).toFixed(2)} $\n\n`;
         dayLines += `<div style="padding:8px 16px;border-bottom:1px solid var(--border)">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
             <span style="font-family:var(--mono);font-size:13px;color:var(--accent2);font-weight:700">${day}</span>
             <span style="font-family:var(--mono);font-size:11px;color:var(--muted)"><b style="color:var(--text)">${fmt(total)} LL</b> = ${toUsd(total)}</span>
           </div>
-          ${dayE.map(e=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:2px 0">
-            <span style="color:var(--muted)">${e.cat}</span>
-            <span style="font-family:var(--mono);font-size:12px;color:var(--text)">${fmt(e.amt)} <span style="color:var(--accent);font-size:11px">${toUsd(e.amt)}</span></span>
-          </div>`).join('')}
+          ${dayE.map(e => {
+            if (e._isWithdrawal) return `<div style="display:flex;justify-content:space-between;font-size:13px;padding:2px 0 2px 8px;border-left:2px solid #a060f0;">
+              <span style="color:#a060f0;">↩ ${escHtml(e.desc)}</span>
+              <span style="font-family:var(--mono);font-size:12px;color:#a060f0;">+${fmt(e.amt)} <span style="font-size:11px">+${toUsd(e.amt)}</span></span>
+            </div>`;
+            const fs = e.fromScheduled || schedSpentIds.has(String(e.id));
+            return `<div style="display:flex;justify-content:space-between;font-size:13px;padding:2px 0 2px ${fs ? '8px' : '0'};${fs ? 'border-left:2px solid #f0a060;' : ''}">
+              <span style="color:${fs ? '#f0a060' : 'var(--muted)'};">${escHtml(e.cat)}</span>
+              <span style="font-family:var(--mono);font-size:12px;color:${fs ? '#f0a060' : 'var(--text)'};">${fmt(e.amt)} <span style="color:var(--accent);font-size:11px">${eUsd(e)}</span></span>
+            </div>`;
+          }).join('')}
         </div>`;
       });
       const monthIncomeEntries = incomeEntries.filter(e => getMonthKey(e.date) === activeMonth);
       const totalIncome = monthIncomeEntries.reduce((s,e) => s + Number(e.amt), 0);
-      const net = totalIncome - grand;
-      if (totalIncome > 0) {
+      // Savings: cumulative total up to and including this month
+      const activeMkNum = mkToNum(activeMonth);
+      const netSavings = savingsEntries
+        .filter(e => mkToNum(e.month) <= activeMkNum)
+        .reduce((s, e) => s + Number(e.amt), 0);
+      const net = totalIncome - grand - netSavings;
+      // Pending scheduled for this month
+      const pendingScheduled = scheduledEntries.filter(e => e.month === activeMonth && e.status !== 'spent');
+      const pendingTotal = pendingScheduled.reduce((s, e) => s + Number(e.amt), 0);
+      const plannedNet = net - pendingTotal;
+      if (totalIncome > 0 || netSavings > 0) {
         txt += `Income: ${fmt(totalIncome)} L.L. = $${(totalIncome/rate).toFixed(2)}\n`;
-        txt += `Balance: ${net >= 0 ? '+' : ''}${fmt(net)} L.L.\n\n`;
+        if (netSavings > 0) txt += `Savings: −${fmt(netSavings)} L.L.\n`;
+        txt += `Balance: ${net >= 0 ? '+' : ''}${fmt(net)} L.L.\n`;
       }
+      if (pendingTotal > 0) {
+        txt += `Scheduled pending: ${fmt(pendingTotal)} L.L.\n`;
+        txt += `Planned balance: ${plannedNet >= 0 ? '+' : ''}${fmt(plannedNet)} L.L.\n`;
+      }
+      if (totalIncome > 0 || pendingTotal > 0) txt += '\n';
       summaryText = txt.trim();
-      const balCard = totalIncome > 0 ? `
-        <div class="balance-card">
+      const hasSavingsCol = netSavings > 0;
+      const balCard = (totalIncome > 0 || grand > 0 || netSavings > 0 || pendingTotal > 0) ? `
+        <div class="balance-card" style="--bal-cols:${hasSavingsCol ? 4 : 3}">
           <div class="bal-item income">
             <span class="bal-label">Income</span>
             <span class="bal-ll">${fmt(totalIncome)} LL</span>
@@ -1066,18 +1505,40 @@
             <span class="bal-ll">${fmt(grand)} LL</span>
             <span class="bal-usd">${toUsd(grand)}</span>
           </div>
+          ${hasSavingsCol ? `<div class="bal-item savings">
+            <span class="bal-label">Total Saved</span>
+            <span class="bal-ll">−${fmt(netSavings)} LL</span>
+            <span class="bal-usd">−${(netSavings/rate).toFixed(2)} $</span>
+          </div>` : ''}
           <div class="bal-item net ${net >= 0 ? 'positive' : 'negative'}">
             <span class="bal-label">Balance</span>
             <span class="bal-ll">${net >= 0 ? '+' : ''}${fmt(net)} LL</span>
             <span class="bal-usd">${net >= 0 ? '+' : ''}${(net/rate).toFixed(2)} $</span>
           </div>
         </div>` : '';
+      const savingsCard = '';
+      const plannedCard = pendingTotal > 0 ? `
+        <div class="planned-balance-card">
+          <div class="planned-balance-title">If all scheduled paid</div>
+          <div class="planned-bal-row">
+            <span class="planned-bal-label">Pending scheduled</span>
+            <span class="planned-bal-amt orange">−${fmt(pendingTotal)} LL</span>
+          </div>
+          <div class="planned-bal-row">
+            <span class="planned-bal-label">Planned balance</span>
+            <span class="planned-bal-amt ${plannedNet >= 0 ? 'positive' : 'negative'}">${plannedNet >= 0 ? '+' : ''}${fmt(plannedNet)} LL = ${plannedNet >= 0 ? '+' : ''}${(plannedNet/rate).toFixed(2)} $</span>
+          </div>
+        </div>` : '';
+      const noSpendingNote = !dayLines ? `<div style="padding:20px 16px;color:var(--muted);font-size:13px;text-align:center;font-style:italic">No spending recorded</div>` : '';
       block.innerHTML = `
         <div class="summary-header">
           <span class="summary-title">${label}</span>
           <span class="grand-total"><span class="ll">${fmt(grand)} LL</span><span class="usd"> = ${toUsd(grand)}</span></span>
         </div>
         ${balCard}
+        ${savingsCard}
+        ${plannedCard}
+        ${noSpendingNote}
         ${dayLines}`;
     }
   }
@@ -1105,6 +1566,632 @@
     document.getElementById('summaryTab').style.display = t==='summary' ? 'flex' : 'none';
     document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', (i===0&&t==='log')||(i===1&&t==='summary')));
     if (t==='summary') renderSummary();
+  }
+
+  // ── SCHEDULED ─────────────────────────────────────────
+  function buildScheduledMonthPicker() {
+    const now = new Date();
+    const monthEl = document.getElementById('planMonthIn');
+    const mNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    mNames.forEach((name, i) => {
+      const o = document.createElement('option');
+      o.value = pad(i+1); o.textContent = name;
+      monthEl.appendChild(o);
+    });
+    monthEl.value = pad(now.getMonth()+1);
+    const yearEl = document.getElementById('planYearIn');
+    yearEl.value = String(now.getFullYear());
+    monthEl.addEventListener('change', renderScheduledSection);
+    yearEl.addEventListener('input',   renderScheduledSection);
+    yearEl.addEventListener('change',  renderScheduledSection);
+  }
+
+  function getPlanMonthKey() {
+    const m = document.getElementById('planMonthIn')?.value;
+    const y = document.getElementById('planYearIn')?.value;
+    return (m && y) ? (m + '/' + y) : (activeMonth !== 'all' ? activeMonth : getMonthKey(getSelectedDate()));
+  }
+
+  function syncScheduledRowsFromDOM() {
+    document.querySelectorAll('#scheduledRowsDiv .entry-row').forEach((rowEl, i) => {
+      if (scheduledRows[i]) {
+        scheduledRows[i].desc = rowEl.querySelector('.row-cat')?.value || '';
+        scheduledRows[i].amt  = rowEl.querySelector('.row-amt')?.value || '';
+      }
+    });
+  }
+
+  function renderScheduledRows(focusLast) {
+    const div = document.getElementById('scheduledRowsDiv');
+    div.innerHTML = scheduledRows.map((row, i) => {
+      const isLL = row.cur !== '$';
+      return `<div class="entry-row">
+        <input class="inp row-cat" type="text" placeholder="Description" value="${escHtml(row.desc)}" autocomplete="off" />
+        <input class="inp row-amt" type="text" inputmode="decimal" placeholder="${isLL ? '0' : '0.00'}" value="${escHtml(row.amt)}" />
+        <button class="cur-row-btn${row.cur === '$' ? ' usd' : ''}" onclick="toggleScheduledRowCur(${i})">${row.cur}</button>
+        ${scheduledRows.length > 1
+          ? `<button class="row-del-btn" onclick="removeScheduledRow(${i})">×</button>`
+          : `<div style="width:20px;flex-shrink:0"></div>`}
+      </div>`;
+    }).join('');
+    const cats = div.querySelectorAll('.row-cat');
+    const amts = div.querySelectorAll('.row-amt');
+    cats.forEach((el, i) => {
+      el.addEventListener('input', () => { scheduledRows[i].desc = el.value; });
+      el.addEventListener('keydown', e => { if (e.key === 'Enter') amts[i]?.focus(); });
+    });
+    amts.forEach((el, i) => {
+      el.addEventListener('input', () => {
+        if (scheduledRows[i]?.cur === '$') formatUSDInput(el); else formatLLInput(el);
+        scheduledRows[i].amt = el.value;
+      });
+      el.addEventListener('blur', () => { if (scheduledRows[i]?.cur === '$') formatUSDBlur(el); });
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { if (i === scheduledRows.length - 1) addScheduledRow(); else cats[i + 1]?.focus(); }
+      });
+    });
+    if (focusLast && cats.length) cats[cats.length - 1].focus();
+  }
+
+  function addScheduledRow() {
+    syncScheduledRowsFromDOM();
+    scheduledRows.push({ desc: '', amt: '', cur: 'LL' });
+    renderScheduledRows(true);
+  }
+
+  function removeScheduledRow(i) {
+    syncScheduledRowsFromDOM();
+    scheduledRows.splice(i, 1);
+    renderScheduledRows(false);
+  }
+
+  function toggleScheduledRowCur(i) {
+    syncScheduledRowsFromDOM();
+    scheduledRows[i].cur = scheduledRows[i].cur === 'LL' ? '$' : 'LL';
+    const rowEl = document.querySelectorAll('#scheduledRowsDiv .entry-row')[i];
+    if (rowEl) {
+      const isLL = scheduledRows[i].cur === 'LL';
+      const btn = rowEl.querySelector('.cur-row-btn');
+      const amt = rowEl.querySelector('.row-amt');
+      btn.textContent = scheduledRows[i].cur;
+      btn.classList.toggle('usd', !isLL);
+      amt.placeholder = isLL ? '0' : '0.00';
+      amt.value = ''; scheduledRows[i].amt = '';
+    }
+  }
+
+  async function loadScheduled() {
+    try {
+      const d = await apiGet({ action: 'getScheduled' });
+      if (d.error) { console.warn('loadScheduled error:', d.error); return; }
+      // Normalize month keys in case Sheets returned a Date object string
+      scheduledEntries = (d.entries || []).map(e => ({ ...e, month: normMk(e.month) }));
+      buildSidebar(); buildMobileMonthSelect();
+      renderScheduledSection();
+      render();
+      if (summaryVisible()) renderSummary();
+    } catch(e) { console.warn('loadScheduled fetch failed:', e); }
+  }
+
+  function renderScheduledSection() {
+    const mk = getPlanMonthKey();
+    const monthScheduled = scheduledEntries.filter(e => e.month === mk);
+    const list = document.getElementById('scheduledList');
+    if (!monthScheduled.length) { list.innerHTML = ''; return; }
+    list.innerHTML = monthScheduled.map(e => {
+      const isPending = e.status !== 'spent';
+      return `<div class="planned-entry${isPending ? '' : ' spent'}">
+        <span class="planned-desc">${escHtml(e.desc)}</span>
+        <span class="planned-amt">${fmt(e.amt)} LL</span>
+        ${isPending
+          ? `<button class="btn-spend" onclick="spendScheduledItem('${e.id}')">Spend</button>`
+          : `<span class="planned-spent-label">✓ ${e.spentDate || 'spent'}</span>`}
+        <button class="entry-del" onclick="deleteScheduledItem('${e.id}')">×</button>
+      </div>`;
+    }).join('');
+  }
+
+  async function addAllScheduled() {
+    syncScheduledRowsFromDOM();
+    const mk = getPlanMonthKey();
+    const valid = scheduledRows.filter(r => r.desc.trim() && parseAmt(r.amt) > 0);
+    if (!valid.length) { toast('Fill at least one description & amount', true); return; }
+    setSyncDot('syncing');
+    try {
+      const batch = valid.map(r => ({
+        month: mk,
+        desc: r.desc.trim(),
+        amt: r.cur === 'LL' ? Math.round(parseAmt(r.amt)) : Math.round(parseAmt(r.amt) * rate)
+      }));
+      const res = await apiPost({ action: 'addScheduled', entries: batch });
+      if (res.ok) {
+        res.ids.forEach((id, i) => scheduledEntries.push({ id, month: mk, desc: batch[i].desc, amt: batch[i].amt, status: 'pending', spentDate: '' }));
+        scheduledRows = [{ desc: '', amt: '', cur: 'LL' }];
+        renderScheduledRows(false);
+        setSyncDot('synced');
+        toast(`${batch.length} scheduled entr${batch.length > 1 ? 'ies' : 'y'} saved ✓`);
+        buildSidebar(); buildMobileMonthSelect();
+        renderScheduledSection();
+        render();
+        if (summaryVisible()) renderSummary();
+      } else throw new Error(res.error);
+    } catch(e) { setSyncDot('error'); toast('Failed to save scheduled', true); }
+  }
+
+  function spendScheduledItem(id) {
+    const item = scheduledEntries.find(e => String(e.id) === String(id));
+    if (!item) return;
+    pendingSpendId = id;
+    pendingSpendData = item;
+    document.getElementById('modalItemName').textContent = item.desc;
+    document.getElementById('modalItemAmt').textContent = fmt(item.amt) + ' LL = ' + toUsd(item.amt);
+    const [mm, yy] = item.month.split('/');
+    const maxDays = daysInMonth(parseInt(mm), parseInt(yy));
+    const dayEl = document.getElementById('modalDayIn');
+    dayEl.innerHTML = '';
+    for (let d = 1; d <= maxDays; d++) {
+      const o = document.createElement('option');
+      o.value = pad(d); o.textContent = pad(d);
+      dayEl.appendChild(o);
+    }
+    const today = new Date().getDate();
+    dayEl.value = pad(today <= maxDays ? today : maxDays);
+    document.getElementById('spendModal').classList.add('open');
+  }
+
+  async function confirmSpend() {
+    if (!pendingSpendId || !pendingSpendData) return;
+    const [mm, yy] = pendingSpendData.month.split('/');
+    const day = document.getElementById('modalDayIn').value;
+    const date = `${day}/${mm}/${yy}`;
+    setSyncDot('syncing');
+    try {
+      const res = await apiPost({ action: 'spendScheduled', id: pendingSpendId, desc: pendingSpendData.desc, amt: pendingSpendData.amt, date });
+      if (res.ok) {
+        const idx = scheduledEntries.findIndex(e => String(e.id) === String(pendingSpendId));
+        if (idx !== -1) {
+          scheduledEntries[idx].status = 'spent';
+          scheduledEntries[idx].spentDate = date;
+          scheduledEntries[idx].spentEntryId = String(res.spendId);
+        }
+        entries.push({ id: res.spendId, date, cat: pendingSpendData.desc, amt: pendingSpendData.amt, usd: (pendingSpendData.amt / rate).toFixed(2), fromScheduled: true });
+        closeSpendModal();
+        setSyncDot('synced');
+        toast('Spent ✓');
+        buildSidebar(); buildMobileMonthSelect(); render();
+        renderScheduledSection();
+        if (summaryVisible()) renderSummary();
+      } else throw new Error(res.error);
+    } catch(e) { setSyncDot('error'); toast('Failed to record spend', true); }
+  }
+
+  function closeSpendModal() {
+    document.getElementById('spendModal').classList.remove('open');
+    pendingSpendId = null;
+    pendingSpendData = null;
+  }
+
+  async function deleteScheduledItem(id) {
+    setSyncDot('syncing');
+    try {
+      await apiPost({ action: 'deleteScheduled', id });
+      scheduledEntries = scheduledEntries.filter(e => String(e.id) !== String(id));
+      setSyncDot('synced');
+      renderScheduledSection();
+      render();
+      if (summaryVisible()) renderSummary();
+    } catch(e) { setSyncDot('error'); toast('Failed to delete', true); }
+  }
+
+  // ── SAVINGS ───────────────────────────────────────────
+  function buildSavingsMonthPicker() {
+    const now = new Date();
+    const monthEl = document.getElementById('savMonthIn');
+    const mNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    mNames.forEach((name, i) => {
+      const o = document.createElement('option');
+      o.value = pad(i+1); o.textContent = name;
+      monthEl.appendChild(o);
+    });
+    monthEl.value = pad(now.getMonth()+1);
+    const yearEl = document.getElementById('savYearIn');
+    yearEl.value = String(now.getFullYear());
+    monthEl.addEventListener('change', renderSavingsSection);
+    yearEl.addEventListener('input',   renderSavingsSection);
+    yearEl.addEventListener('change',  renderSavingsSection);
+  }
+
+  function getSavingsMonthKey() {
+    const m = document.getElementById('savMonthIn')?.value;
+    const y = document.getElementById('savYearIn')?.value;
+    return (m && y) ? (m + '/' + y) : (activeMonth !== 'all' ? activeMonth : getMonthKey(getSelectedDate()));
+  }
+
+  function syncSavingsRowsFromDOM() {
+    document.querySelectorAll('#savingsRowsDiv .entry-row').forEach((rowEl, i) => {
+      if (savingsRows[i]) {
+        savingsRows[i].desc = rowEl.querySelector('.row-cat')?.value || '';
+        savingsRows[i].amt  = rowEl.querySelector('.row-amt')?.value || '';
+      }
+    });
+  }
+
+  function renderSavingsRows(focusLast) {
+    const div = document.getElementById('savingsRowsDiv');
+    div.innerHTML = savingsRows.map((row, i) => {
+      const isLL = row.cur !== '$';
+      return `<div class="entry-row">
+        <input class="inp row-cat" type="text" placeholder="Description" value="${escHtml(row.desc)}" autocomplete="off" />
+        <input class="inp row-amt" type="text" inputmode="decimal" placeholder="${isLL ? '0' : '0.00'}" value="${escHtml(row.amt)}" />
+        <button class="cur-row-btn${row.cur === '$' ? ' usd' : ''}" onclick="toggleSavingsRowCur(${i})">${row.cur}</button>
+        ${savingsRows.length > 1
+          ? `<button class="row-del-btn" onclick="removeSavingsRow(${i})">×</button>`
+          : `<div style="width:20px;flex-shrink:0"></div>`}
+      </div>`;
+    }).join('');
+    const cats = div.querySelectorAll('.row-cat');
+    const amts = div.querySelectorAll('.row-amt');
+    cats.forEach((el, i) => {
+      el.addEventListener('input', () => { savingsRows[i].desc = el.value; });
+      el.addEventListener('keydown', e => { if (e.key === 'Enter') amts[i]?.focus(); });
+    });
+    amts.forEach((el, i) => {
+      el.addEventListener('input', () => {
+        if (savingsRows[i]?.cur === '$') formatUSDInput(el); else formatLLInput(el);
+        savingsRows[i].amt = el.value;
+      });
+      el.addEventListener('blur', () => { if (savingsRows[i]?.cur === '$') formatUSDBlur(el); });
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { if (i === savingsRows.length - 1) addSavingsRow(); else cats[i + 1]?.focus(); }
+      });
+    });
+    if (focusLast && cats.length) cats[cats.length - 1].focus();
+  }
+
+  function addSavingsRow() {
+    syncSavingsRowsFromDOM();
+    savingsRows.push({ desc: '', amt: '', cur: 'LL' });
+    renderSavingsRows(true);
+  }
+
+  function removeSavingsRow(i) {
+    syncSavingsRowsFromDOM();
+    savingsRows.splice(i, 1);
+    renderSavingsRows(false);
+  }
+
+  function toggleSavingsRowCur(i) {
+    syncSavingsRowsFromDOM();
+    savingsRows[i].cur = savingsRows[i].cur === 'LL' ? '$' : 'LL';
+    const rowEl = document.querySelectorAll('#savingsRowsDiv .entry-row')[i];
+    if (rowEl) {
+      const isLL = savingsRows[i].cur === 'LL';
+      const btn = rowEl.querySelector('.cur-row-btn');
+      const amt = rowEl.querySelector('.row-amt');
+      btn.textContent = savingsRows[i].cur;
+      btn.classList.toggle('usd', !isLL);
+      amt.placeholder = isLL ? '0' : '0.00';
+      amt.value = ''; savingsRows[i].amt = '';
+    }
+  }
+
+  async function loadSavings() {
+    try {
+      const d = await apiGet({ action: 'getSavings' });
+      if (d.error) { console.warn('loadSavings error:', d.error); return; }
+      const all = (d.entries || []).map(e => ({ ...e, month: normMk(e.month) }));
+      savingsEntries    = all.filter(e => e.status !== 'withdrawal');
+      withdrawalEntries = all.filter(e => e.status === 'withdrawal');
+      buildSidebar(); buildMobileMonthSelect();
+      renderSavingsSection();
+      render();
+      if (summaryVisible()) renderSummary();
+    } catch(e) { console.warn('loadSavings fetch failed:', e); }
+  }
+
+  function renderSavingsSection() {
+    const mk = getSavingsMonthKey();
+    const monthSavings = savingsEntries.filter(e => e.month === mk);
+    const list = document.getElementById('savingsList');
+    list.innerHTML = monthSavings.map(e => `
+      <div class="savings-entry">
+        <span class="savings-desc">${escHtml(e.desc)}</span>
+        <span class="savings-amt">${fmt(e.amt)} LL</span>
+        <button class="btn-withdraw" onclick="withdrawSavingItem('${e.id}')">Withdraw</button>
+        <button class="entry-del" onclick="deleteSavingItem('${e.id}')">×</button>
+      </div>`).join('');
+    // Total savings pot across all months
+    const totalEl = document.getElementById('savingsTotalEl');
+    if (totalEl) {
+      const totalAllSav = savingsEntries.reduce((s,e)=>s+Number(e.amt),0);
+      if (totalAllSav > 0) {
+        totalEl.innerHTML = `<div class="savings-total-bar">
+          <div class="savings-total-info">
+            <div class="savings-total-label">Total Savings</div>
+            <span class="savings-total-amt">${fmt(totalAllSav)} LL</span>
+            <span class="savings-total-usd"> = ${toUsd(totalAllSav)}</span>
+          </div>
+          <button class="btn-withdraw" onclick="openTotalWithdrawModal()">Withdraw</button>
+        </div>`;
+      } else {
+        totalEl.innerHTML = '';
+      }
+    }
+  }
+
+  async function addAllSavings() {
+    syncSavingsRowsFromDOM();
+    const mk = getSavingsMonthKey();
+    const valid = savingsRows.filter(r => r.desc.trim() && parseAmt(r.amt) > 0);
+    if (!valid.length) { toast('Fill at least one description & amount', true); return; }
+    setSyncDot('syncing');
+    try {
+      const batch = valid.map(r => ({
+        month: mk,
+        desc: r.desc.trim(),
+        amt: r.cur === 'LL' ? Math.round(parseAmt(r.amt)) : Math.round(parseAmt(r.amt) * rate)
+      }));
+      const res = await apiPost({ action: 'addSavings', entries: batch });
+      if (res.ok) {
+        res.ids.forEach((id, i) => savingsEntries.push({ id, month: mk, desc: batch[i].desc, amt: batch[i].amt, status: 'saving', withdrawnDate: '' }));
+        savingsRows = [{ desc: '', amt: '', cur: 'LL' }];
+        renderSavingsRows(false);
+        setSyncDot('synced');
+        toast(`${batch.length} saving${batch.length > 1 ? 's' : ''} added ✓`);
+        buildSidebar(); buildMobileMonthSelect();
+        renderSavingsSection();
+        render();
+        if (summaryVisible()) renderSummary();
+      } else throw new Error(res.error);
+    } catch(e) { setSyncDot('error'); toast('Failed to save', true); }
+  }
+
+  function withdrawSavingItem(id) {
+    const item = savingsEntries.find(e => String(e.id) === String(id));
+    if (!item) return;
+    pendingWithdrawId = id;
+    pendingWithdrawData = item;
+    document.getElementById('withdrawModalItemName').textContent = item.desc;
+    document.getElementById('withdrawModalItemAmt').textContent = fmt(item.amt) + ' LL = ' + toUsd(item.amt);
+    withdrawCur = 'LL';
+    const curBtn = document.getElementById('withdrawCurBtn');
+    curBtn.textContent = 'LL';
+    curBtn.classList.remove('usd');
+    const amtEl = document.getElementById('withdrawAmtIn');
+    amtEl.dataset.max = item.amt;
+    amtEl.placeholder = '0';
+    amtEl.value = fmt(item.amt);
+    updateWithdrawHint();
+    amtEl.oninput = () => {
+      if (withdrawCur === '$') { formatUSDInput(amtEl); } else { formatLLInput(amtEl); }
+      const v = getAmtValue(amtEl);
+      const maxLL = Number(amtEl.dataset.max);
+      const vLL = withdrawCur === '$' ? Math.round(v * rate) : v;
+      if (vLL > maxLL) {
+        amtEl.value = withdrawCur === '$' ? (maxLL / rate).toFixed(2) : fmt(maxLL);
+      }
+      updateWithdrawHint();
+    };
+    amtEl.onblur = () => { if (withdrawCur === '$') formatUSDBlur(amtEl); };
+    const [mm, yy] = item.month.split('/');
+    buildWithdrawDatePicker(mm, yy);
+    document.getElementById('withdrawModal').classList.add('open');
+  }
+
+  function toggleWithdrawCur() {
+    withdrawCur = withdrawCur === 'LL' ? '$' : 'LL';
+    const curBtn = document.getElementById('withdrawCurBtn');
+    curBtn.textContent = withdrawCur;
+    curBtn.classList.toggle('usd', withdrawCur === '$');
+    const amtEl = document.getElementById('withdrawAmtIn');
+    amtEl.value = '';
+    amtEl.placeholder = withdrawCur === '$' ? '0.00' : '0';
+    amtEl.focus();
+    updateWithdrawHint();
+  }
+
+  function updateWithdrawHint() {
+    const amtEl = document.getElementById('withdrawAmtIn');
+    const hintEl = document.getElementById('withdrawAmtHint');
+    const v = getAmtValue(amtEl);
+    if (!v) { hintEl.textContent = ''; return; }
+    if (withdrawCur === '$') {
+      hintEl.textContent = '≈ ' + fmt(Math.round(v * rate)) + ' LL';
+    } else {
+      hintEl.textContent = '≈ ' + (v / rate).toFixed(2) + ' $';
+    }
+  }
+
+  async function confirmWithdraw() {
+    if (!pendingWithdrawId || !pendingWithdrawData) return;
+    const amtEl = document.getElementById('withdrawAmtIn');
+    const v = getAmtValue(amtEl);
+    const withdrawnAmt = withdrawCur === '$' ? Math.round(v * rate) : Math.round(v);
+    const max = Number(amtEl.dataset.max);
+    if (withdrawnAmt <= 0) { toast('Amount must be greater than 0', true); return; }
+    if (withdrawnAmt > max) { toast('Amount exceeds saving total', true); return; }
+    const date = getWithdrawDate();
+    if (pendingWithdrawId === '__TOTAL__') {
+      await confirmTotalWithdraw(withdrawnAmt, date);
+      return;
+    }
+    setSyncDot('syncing');
+    try {
+      const res = await apiPost({ action: 'withdrawSaving', id: pendingWithdrawId, date, withdrawnAmt });
+      if (res.ok) {
+        const savingMonth = pendingWithdrawData.month;
+        const savingDesc  = pendingWithdrawData.desc;
+        const idx = savingsEntries.findIndex(e => String(e.id) === String(pendingWithdrawId));
+        if (res.isFullWithdraw) {
+          if (idx !== -1) savingsEntries.splice(idx, 1);
+        } else {
+          if (idx !== -1) savingsEntries[idx].amt = Number(savingsEntries[idx].amt) - withdrawnAmt;
+        }
+        withdrawalEntries.push({
+          id: res.withdrawalId, month: savingMonth, desc: savingDesc,
+          amt: withdrawnAmt, status: 'withdrawal', date,
+          sourceSavingId: res.isFullWithdraw ? '' : String(pendingWithdrawId)
+        });
+        closeWithdrawModal();
+        setSyncDot('synced');
+        toast('Withdrawn ✓');
+        buildSidebar(); buildMobileMonthSelect();
+        renderSavingsSection(); render();
+        if (summaryVisible()) renderSummary();
+      } else throw new Error(res.error);
+    } catch(e) { setSyncDot('error'); toast('Failed to record withdrawal', true); }
+  }
+
+  function closeWithdrawModal() {
+    document.getElementById('withdrawModal').classList.remove('open');
+    pendingWithdrawId = null;
+    pendingWithdrawData = null;
+    withdrawCur = 'LL';
+  }
+
+  // Build the withdraw modal date picker (day + month + year selects)
+  function buildWithdrawDatePicker(defaultMm, defaultYy) {
+    const mNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const monthEl = document.getElementById('withdrawModalMonthIn');
+    const yearEl  = document.getElementById('withdrawModalYearIn');
+    const dayEl   = document.getElementById('withdrawModalDayIn');
+    monthEl.innerHTML = mNames.map((n,i) => `<option value="${pad(i+1)}"${pad(i+1)===defaultMm?' selected':''}>${n}</option>`).join('');
+    yearEl.value = defaultYy;
+    const rebuild = () => {
+      const wm = parseInt(monthEl.value);
+      const wy = parseInt(yearEl.value) || new Date().getFullYear();
+      const max = daysInMonth(wm, wy);
+      const prev = parseInt(dayEl.value) || 1;
+      dayEl.innerHTML = '';
+      for (let d = 1; d <= max; d++) {
+        const o = document.createElement('option');
+        o.value = pad(d); o.textContent = pad(d);
+        dayEl.appendChild(o);
+      }
+      dayEl.value = pad(Math.min(prev, max));
+    };
+    monthEl.onchange = rebuild;
+    yearEl.oninput  = rebuild;
+    yearEl.onchange = rebuild;
+    rebuild();
+    const today = new Date().getDate();
+    const maxD = daysInMonth(parseInt(defaultMm), parseInt(defaultYy));
+    dayEl.value = pad(Math.min(today, maxD));
+  }
+
+  function getWithdrawDate() {
+    const day = document.getElementById('withdrawModalDayIn').value;
+    const mm  = document.getElementById('withdrawModalMonthIn').value;
+    const yy  = document.getElementById('withdrawModalYearIn').value;
+    return `${day}/${mm}/${yy}`;
+  }
+
+  // Open withdraw modal for the TOTAL savings pool (cascading withdrawal)
+  function openTotalWithdrawModal() {
+    const totalAmt = savingsEntries.reduce((s,e)=>s+Number(e.amt),0);
+    if (!totalAmt) { toast('No savings to withdraw', true); return; }
+    pendingWithdrawId = '__TOTAL__';
+    pendingWithdrawData = { desc: 'Total Savings', month: null };
+    document.getElementById('withdrawModalItemName').textContent = 'Total Savings';
+    document.getElementById('withdrawModalItemAmt').textContent = fmt(totalAmt) + ' LL = ' + toUsd(totalAmt);
+    withdrawCur = 'LL';
+    const curBtn = document.getElementById('withdrawCurBtn');
+    curBtn.textContent = 'LL';
+    curBtn.classList.remove('usd');
+    const amtEl = document.getElementById('withdrawAmtIn');
+    amtEl.dataset.max = totalAmt;
+    amtEl.placeholder = '0';
+    amtEl.value = '';
+    updateWithdrawHint();
+    amtEl.oninput = () => {
+      if (withdrawCur === '$') { formatUSDInput(amtEl); } else { formatLLInput(amtEl); }
+      const v = getAmtValue(amtEl);
+      const maxLL = Number(amtEl.dataset.max);
+      const vLL = withdrawCur === '$' ? Math.round(v * rate) : v;
+      if (vLL > maxLL) {
+        amtEl.value = withdrawCur === '$' ? (maxLL / rate).toFixed(2) : fmt(maxLL);
+      }
+      updateWithdrawHint();
+    };
+    amtEl.onblur = () => { if (withdrawCur === '$') formatUSDBlur(amtEl); };
+    const today = new Date();
+    const mm = String(today.getMonth()+1).padStart(2,'0');
+    const yy = String(today.getFullYear());
+    buildWithdrawDatePicker(mm, yy);
+    document.getElementById('withdrawModal').classList.add('open');
+  }
+
+  // Cascade withdrawal across savings from latest month to earliest
+  async function confirmTotalWithdraw(totalAmtLL, date) {
+    setSyncDot('syncing');
+    try {
+      const sorted = [...savingsEntries].sort((a,b) => mkToNum(b.month) - mkToNum(a.month));
+      let remaining = totalAmtLL;
+      let processed = 0;
+      for (const entry of sorted) {
+        if (remaining <= 0) break;
+        const toTake = Math.min(Number(entry.amt), remaining);
+        const res = await apiPost({ action: 'withdrawSaving', id: entry.id, date, withdrawnAmt: toTake });
+        if (!res.ok) throw new Error(res.error || 'Withdrawal failed');
+        const idx = savingsEntries.findIndex(e => String(e.id) === String(entry.id));
+        if (res.isFullWithdraw) {
+          if (idx !== -1) savingsEntries.splice(idx, 1);
+        } else {
+          if (idx !== -1) savingsEntries[idx].amt = Number(savingsEntries[idx].amt) - toTake;
+        }
+        withdrawalEntries.push({
+          id: res.withdrawalId, month: entry.month, desc: entry.desc,
+          amt: toTake, status: 'withdrawal', date,
+          sourceSavingId: res.isFullWithdraw ? '' : String(entry.id)
+        });
+        remaining -= toTake;
+        processed++;
+      }
+      closeWithdrawModal();
+      setSyncDot('synced');
+      toast('Withdrawn' + (processed > 1 ? ' across ' + processed + ' savings' : '') + ' ✓');
+      buildSidebar(); buildMobileMonthSelect();
+      renderSavingsSection(); render();
+      if (summaryVisible()) renderSummary();
+    } catch(e) { setSyncDot('error'); toast('Failed to record withdrawal', true); }
+  }
+
+  async function deleteSavingItem(id) {
+    setSyncDot('syncing');
+    try {
+      await apiPost({ action: 'deleteSaving', id });
+      savingsEntries = savingsEntries.filter(e => String(e.id) !== String(id));
+      setSyncDot('synced');
+      toast('Saving removed ✓');
+      buildSidebar(); buildMobileMonthSelect();
+      renderSavingsSection(); render();
+      if (summaryVisible()) renderSummary();
+    } catch(e) { setSyncDot('error'); toast('Failed to delete', true); }
+  }
+
+  async function deleteWithdrawalEntry(id) {
+    const w = withdrawalEntries.find(e => String(e.id) === String(id));
+    if (!w) return;
+    setSyncDot('syncing');
+    try {
+      const res = await apiPost({ action: 'deleteWithdrawal', id });
+      if (res.ok) {
+        withdrawalEntries = withdrawalEntries.filter(e => String(e.id) !== String(id));
+        if (res.newSavingId) {
+          // Full withdrawal undone — recreate saving in local state
+          savingsEntries.push({ id: res.newSavingId, month: w.month, desc: w.desc, amt: w.amt, status: 'saving' });
+        } else if (res.updatedSavingId) {
+          // Partial withdrawal undone — add amount back
+          const idx = savingsEntries.findIndex(e => String(e.id) === res.updatedSavingId);
+          if (idx !== -1) savingsEntries[idx].amt = Number(savingsEntries[idx].amt) + Number(w.amt);
+        }
+        setSyncDot('synced');
+        toast('Withdrawal removed ✓');
+        buildSidebar(); buildMobileMonthSelect();
+        renderSavingsSection(); render();
+        if (summaryVisible()) renderSummary();
+      } else throw new Error(res.error);
+    } catch(e) { setSyncDot('error'); toast('Failed to delete withdrawal', true); }
   }
 
   function toast(msg, isErr=false) {

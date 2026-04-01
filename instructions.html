@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="shortcut icon" href="icon-192.png" />
-  <title>Masraf — Instructions</title>
+  <title>Masraf â€” Instructions</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -115,7 +115,7 @@
     .platform-name { font-size: 13px; font-weight: 600; color: var(--accent2); margin-bottom: 8px; }
     .platform-steps { list-style: none; display: flex; flex-direction: column; gap: 5px; }
     .platform-steps li { font-size: 12px; color: var(--muted); line-height: 1.5; padding-left: 14px; position: relative; }
-    .platform-steps li::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+    .platform-steps li::before { content: 'â†’'; position: absolute; left: 0; color: var(--accent); }
 
     /* RETRIEVE URL */
     .retrieve-steps { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
@@ -140,11 +140,11 @@
 
   <div class="top-bar">
     <a class="logo" href="index.html">mas<span>raf</span></a>
-    <a class="back-btn" href="index.html">← Back to app</a>
+    <a class="back-btn" href="index.html">â† Back to app</a>
   </div>
 
   <div class="hero">
-    <h1><span>Masraf</span> — Setup &amp; User Guide</h1>
+    <h1><span>Masraf</span> â€” Setup &amp; User Guide</h1>
     <p>Everything you need to get the app running and start tracking your daily spending.</p>
   </div>
 
@@ -166,11 +166,11 @@
   </div>
 
 
-  <!-- ══════════════════════════════════════ -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <!-- SETUP SECTION                          -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 
-  <!-- STEP 1 — GOOGLE SHEET -->
+  <!-- STEP 1 â€” GOOGLE SHEET -->
   <div class="section" id="s1">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">1</div>
@@ -179,30 +179,30 @@
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Open Google Sheets</strong>
           <p>Go to <a href="https://sheets.google.com" target="_blank" style="color:var(--accent2);text-decoration:none;">sheets.google.com</a> and sign in with your Google account.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Create a new spreadsheet</strong>
           <p>Click the large <b>+</b> (Blank) button to create a new spreadsheet. Rename it <b>Masraf</b> by clicking "Untitled spreadsheet" at the top left.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Leave it open</strong>
-          <p>Keep this tab open — you'll need it in the next step.</p>
+          <p>Keep this tab open â€” you'll need it in the next step.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 2 — APPS SCRIPT -->
+  <!-- STEP 2 â€” APPS SCRIPT -->
   <div class="section" id="s2">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">2</div>
@@ -211,46 +211,494 @@
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Open Apps Script</strong>
-          <p>In your Google Sheet, click the menu: <span class="path">Extensions</span> → <span class="path">Apps Script</span>. A new tab will open with a code editor.</p>
+          <p>In your Google Sheet, click the menu: <span class="path">Extensions</span> â†’ <span class="path">Apps Script</span>. A new tab will open with a code editor.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Replace the existing code</strong>
           <p>Select all the existing code in the editor (<b>Ctrl+A</b> or <b>Cmd+A</b>), then delete it. Copy the code below and paste it in.</p>
           <div class="code-block">
             <div class="code-header">
-              <span class="code-lang">Code.gs — Apps Script</span>
+              <span class="code-lang">Code.gs â€” Apps Script</span>
               <button class="copy-code-btn" onclick="copyCode()">Copy code</button>
             </div>
-            <pre id="codeContent">// Paste the full contents of Code.gs here.
-// Get the latest version from the repository.</pre>
+            <pre id="codeContent">// MASRAF - Google Apps Script Backend
+
+const SHEET_NAME          = 'Spending';
+const INCOME_SHEET_NAME   = 'Income';
+const SCHEDULED_SHEET_NAME = 'Scheduled';
+const SAVINGS_SHEET_NAME  = 'Savings';
+
+// â”€â”€ SHEET HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function normalizeSheetDate(date) {
+  if (date instanceof Date) {
+    const d = String(date.getDate()).padStart(2,'0');
+    const m = String(date.getMonth()+1).padStart(2,'0');
+    return d + '/' + m + '/' + date.getFullYear();
+  }
+  return String(date);
+}
+
+function styleHeader(sheet, cols, color) {
+  const header = sheet.getRange(1, 1, 1, cols);
+  header.setBackground('#0f0f0f');
+  header.setFontColor(color);
+  header.setFontWeight('bold');
+}
+
+function getOrCreateSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+    sheet.appendRow(['ID','Date','Category','Amount (LL)','Amount ($)','Timestamp']);
+    sheet.setFrozenRows(1);
+    styleHeader(sheet, 6, '#c8f060');
+    [80,80,180,120,100,160].forEach((w,i) => sheet.setColumnWidth(i+1, w));
+  }
+  return sheet;
+}
+
+function getOrCreateIncomeSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(INCOME_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(INCOME_SHEET_NAME);
+    sheet.appendRow(['ID','Date','Description','Amount (LL)','Amount ($)','Timestamp']);
+    sheet.setFrozenRows(1);
+    styleHeader(sheet, 6, '#60d4f0');
+    [80,80,180,120,100,160].forEach((w,i) => sheet.setColumnWidth(i+1, w));
+  }
+  return sheet;
+}
+
+function getOrCreateScheduledSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(SCHEDULED_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(SCHEDULED_SHEET_NAME);
+    sheet.appendRow(['ID','Month','Description','Amount (LL)','Amount ($)','Status','Spent Date','Spent Entry ID']);
+    sheet.setFrozenRows(1);
+    styleHeader(sheet, 8, '#f0a060');
+    [80,80,180,120,100,80,100,120].forEach((w,i) => sheet.setColumnWidth(i+1, w));
+  }
+  // Force Month column (B) to plain text so Google Sheets never auto-converts MM/YYYY to a Date
+  sheet.getRange('B:B').setNumberFormat('@');
+  return sheet;
+}
+
+// â”€â”€ ROUTING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function doGet(e) {
+  const action = e.parameter.action;
+  if (action === 'getAll')       return getAll();
+  if (action === 'getIncome')    return getIncome();
+  if (action === 'getScheduled') return getScheduled();
+  if (action === 'getSavings')   return getSavings();
+  if (action === 'getRate')      return getRate();
+  return jsonResponse({ error: 'Unknown action' });
+}
+
+function doPost(e) {
+  try {
+    const body = JSON.parse(e.postData.contents);
+    if (body.action === 'add')             return addEntry(body);
+    if (body.action === 'addBatch')        return addBatch(body);
+    if (body.action === 'delete')          return deleteEntry(body);
+    if (body.action === 'addIncome')       return addIncome(body);
+    if (body.action === 'deleteIncome')    return deleteIncome(body);
+    if (body.action === 'addScheduled')     return addScheduled(body);
+    if (body.action === 'spendScheduled')   return spendScheduled(body);
+    if (body.action === 'deleteScheduled')  return deleteScheduled(body);
+    if (body.action === 'restoreScheduled') return restoreScheduled(body);
+    if (body.action === 'addSavings')        return addSavings(body);
+    if (body.action === 'withdrawSaving')   return withdrawSaving(body);
+    if (body.action === 'deleteSaving')     return deleteSaving(body);
+    if (body.action === 'deleteWithdrawal') return deleteWithdrawal(body);
+    if (body.action === 'setRate')         return setRate(body);
+    return jsonResponse({ error: 'Unknown action' });
+  } catch(err) {
+    return jsonResponse({ error: err.message });
+  }
+}
+
+// â”€â”€ SPENDING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function getAll() {
+  const sheet = getOrCreateSheet();
+  const rows  = sheet.getDataRange().getValues();
+  const entries = [];
+  for (let i = 1; i &lt; rows.length; i++) {
+    if (rows[i][0]) entries.push({
+      id: rows[i][0], date: normalizeSheetDate(rows[i][1]),
+      cat: rows[i][2], amt: rows[i][3], usd: rows[i][4], row: i + 1
+    });
+  }
+  return jsonResponse({ entries });
+}
+
+function addEntry(body) {
+  const sheet = getOrCreateSheet();
+  const rate  = getRate_().rate;
+  const id    = Date.now().toString();
+  sheet.appendRow([id, body.date, body.cat, body.amt, (body.amt/rate).toFixed(2), new Date().toISOString()]);
+  return jsonResponse({ ok: true, id });
+}
+
+function addBatch(body) {
+  const sheet = getOrCreateSheet();
+  const rate  = getRate_().rate;
+  const ids   = [];
+  (body.entries || []).forEach(function(entry, i) {
+    const id = String(Date.now() + i);
+    sheet.appendRow([id, entry.date, entry.cat, entry.amt, (entry.amt/rate).toFixed(2), new Date().toISOString()]);
+    ids.push(id);
+  });
+  return jsonResponse({ ok: true, ids });
+}
+
+function deleteEntry(body) {
+  const sheet = getOrCreateSheet();
+  const rows  = sheet.getDataRange().getValues();
+  for (let i = 1; i &lt; rows.length; i++) {
+    if (String(rows[i][0]) === String(body.id)) {
+      sheet.deleteRow(i + 1);
+      return jsonResponse({ ok: true });
+    }
+  }
+  return jsonResponse({ error: 'Entry not found' });
+}
+
+// â”€â”€ INCOME â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function getIncome() {
+  const sheet = getOrCreateIncomeSheet();
+  const rows  = sheet.getDataRange().getValues();
+  const entries = [];
+  for (let i = 1; i &lt; rows.length; i++) {
+    if (rows[i][0]) entries.push({
+      id: rows[i][0], date: normalizeSheetDate(rows[i][1]),
+      desc: rows[i][2], amt: rows[i][3], usd: rows[i][4], row: i + 1
+    });
+  }
+  return jsonResponse({ entries });
+}
+
+function addIncome(body) {
+  const sheet = getOrCreateIncomeSheet();
+  const rate  = getRate_().rate;
+  const id    = Date.now().toString();
+  sheet.appendRow([id, body.date, body.desc, body.amt, (body.amt/rate).toFixed(2), new Date().toISOString()]);
+  return jsonResponse({ ok: true, id });
+}
+
+function deleteIncome(body) {
+  const sheet = getOrCreateIncomeSheet();
+  const rows  = sheet.getDataRange().getValues();
+  for (let i = 1; i &lt; rows.length; i++) {
+    if (String(rows[i][0]) === String(body.id)) {
+      sheet.deleteRow(i + 1);
+      return jsonResponse({ ok: true });
+    }
+  }
+  return jsonResponse({ error: 'Income entry not found' });
+}
+
+// â”€â”€ SCHEDULED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function normalizeMonthKey(v) {
+  // Google Sheets may auto-convert "MM/YYYY" to a Date â€” recover it safely
+  var d = null;
+  if (v instanceof Date) {
+    d = v;
+  } else {
+    var s = String(v).trim();
+    // Already MM/YYYY or M/YYYY
+    if (/^\d{1,2}\/\d{4}$/.test(s)) {
+      var p = s.split('/');
+      return (p[0].length === 1 ? '0' + p[0] : p[0]) + '/' + p[1];
+    }
+    // Might be a Date.toString() â€” try parsing
+    if (s.length &gt; 7) {
+      var parsed = new Date(s);
+      if (!isNaN(parsed.getTime())) d = parsed;
+    }
+  }
+  if (d) {
+    var m = d.getMonth() + 1;
+    return (m &lt; 10 ? '0' + m : '' + m) + '/' + d.getFullYear();
+  }
+  return String(v);
+}
+
+function getScheduled() {
+  const sheet = getOrCreateScheduledSheet();
+  const rows  = sheet.getDataRange().getValues();
+  const entries = [];
+  for (let i = 1; i &lt; rows.length; i++) {
+    if (rows[i][0]) entries.push({
+      id:           String(rows[i][0]),
+      month:        normalizeMonthKey(rows[i][1]),
+      desc:         rows[i][2],
+      amt:          rows[i][3],
+      status:       rows[i][5] || 'pending',
+      spentDate:    rows[i][6] ? normalizeSheetDate(rows[i][6]) : '',
+      spentEntryId: rows[i][7] ? String(rows[i][7]) : '',
+      row:          i + 1
+    });
+  }
+  return jsonResponse({ entries });
+}
+
+function addScheduled(body) {
+  const sheet = getOrCreateScheduledSheet();
+  const rate  = getRate_().rate;
+  const ids   = [];
+  (body.entries || []).forEach(function(entry, i) {
+    const id = String(Date.now() + i);
+    sheet.appendRow([id, entry.month, entry.desc, entry.amt, (entry.amt/rate).toFixed(2), 'pending', '', '']);
+    ids.push(id);
+  });
+  return jsonResponse({ ok: true, ids });
+}
+
+function spendScheduled(body) {
+  // 1. Add to Spending sheet
+  const spendSheet = getOrCreateSheet();
+  const rate       = getRate_().rate;
+  const spendId    = Date.now().toString();
+  spendSheet.appendRow([spendId, body.date, body.desc, body.amt, (body.amt/rate).toFixed(2), new Date().toISOString()]);
+
+  // 2. Update Scheduled row status
+  const schedSheet = getOrCreateScheduledSheet();
+  const rows       = schedSheet.getDataRange().getValues();
+  for (let i = 1; i &lt; rows.length; i++) {
+    if (String(rows[i][0]) === String(body.id)) {
+      schedSheet.getRange(i + 1, 6).setValue('spent');
+      schedSheet.getRange(i + 1, 7).setValue(body.date);
+      schedSheet.getRange(i + 1, 8).setValue(spendId);
+      break;
+    }
+  }
+  return jsonResponse({ ok: true, spendId });
+}
+
+function restoreScheduled(body) {
+  // Reset a scheduled entry back to pending (when its spending entry is deleted)
+  const sheet = getOrCreateScheduledSheet();
+  const rows  = sheet.getDataRange().getValues();
+  for (let i = 1; i &lt; rows.length; i++) {
+    if (String(rows[i][0]) === String(body.id)) {
+      sheet.getRange(i + 1, 6).setValue('pending');
+      sheet.getRange(i + 1, 7).setValue('');
+      sheet.getRange(i + 1, 8).setValue('');
+      return jsonResponse({ ok: true });
+    }
+  }
+  return jsonResponse({ error: 'Scheduled entry not found' });
+}
+
+function deleteScheduled(body) {
+  const sheet = getOrCreateScheduledSheet();
+  const rows  = sheet.getDataRange().getValues();
+  for (let i = 1; i &lt; rows.length; i++) {
+    if (String(rows[i][0]) === String(body.id)) {
+      sheet.deleteRow(i + 1);
+      return jsonResponse({ ok: true });
+    }
+  }
+  return jsonResponse({ error: 'Scheduled entry not found' });
+}
+
+// â”€â”€ SAVINGS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function getOrCreateSavingsSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(SAVINGS_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(SAVINGS_SHEET_NAME);
+    // Col: ID | Month(saving's month) | Description | Amount(LL) | Amount($) | Status | Date(withdrawal day) | Source Saving ID
+    sheet.appendRow(['ID','Month','Description','Amount (LL)','Amount ($)','Status','Date','Source Saving ID']);
+    sheet.setFrozenRows(1);
+    styleHeader(sheet, 8, '#a060f0');
+    [80,80,180,120,100,100,120,120].forEach((w,i) => sheet.setColumnWidth(i+1, w));
+  }
+  // Force Month and Date columns to plain text â€” prevents Google Sheets auto-date conversion
+  sheet.getRange('B:B').setNumberFormat('@');
+  sheet.getRange('G:G').setNumberFormat('@');
+  sheet.getRange('H:H').setNumberFormat('@');
+  return sheet;
+}
+
+function getSavings() {
+  const sheet = getOrCreateSavingsSheet();
+  const rows  = sheet.getDataRange().getValues();
+  const entries = [];
+  for (var i = 1; i &lt; rows.length; i++) {
+    if (!rows[i][0]) continue;
+    var status = String(rows[i][5] || 'saving');
+    // Normalise: old 'withdrawn' rows from previous schema â†’ treat as 'saving'
+    if (status !== 'saving' &amp;&amp; status !== 'withdrawal') status = 'saving';
+    entries.push({
+      id:            String(rows[i][0]),
+      month:         normalizeMonthKey(rows[i][1]),
+      desc:          rows[i][2],
+      amt:           rows[i][3],
+      status:        status,
+      date:          rows[i][6] ? normalizeSheetDate(rows[i][6]) : '',
+      sourceSavingId: rows[i][7] ? String(rows[i][7]) : ''
+    });
+  }
+  return jsonResponse({ entries });
+}
+
+function addSavings(body) {
+  const sheet = getOrCreateSavingsSheet();
+  const rate  = getRate_().rate;
+  const ids   = [];
+  (body.entries || []).forEach(function(entry, i) {
+    const id = String(Date.now() + i);
+    sheet.appendRow([id, entry.month, entry.desc, entry.amt, (entry.amt/rate).toFixed(2), 'saving', '', '']);
+    ids.push(id);
+  });
+  return jsonResponse({ ok: true, ids });
+}
+
+function withdrawSaving(body) {
+  // body: { id (saving row ID), date (DD/MM/YYYY), withdrawnAmt (LL) }
+  var sheet = getOrCreateSavingsSheet();
+  var rows  = sheet.getDataRange().getValues();
+  var rate  = getRate_().rate;
+  for (var i = 1; i &lt; rows.length; i++) {
+    if (String(rows[i][0]) !== String(body.id)) continue;
+    var currentAmt    = Number(rows[i][3]);
+    var savedMonth    = String(rows[i][1]);
+    var desc          = rows[i][2];
+    var withdrawnAmt  = Number(body.withdrawnAmt);
+    var isFullWithdraw = withdrawnAmt &gt;= currentAmt;
+
+    // 1. Append withdrawal row BEFORE deleting (avoids index shifts)
+    var wId = String(Date.now());
+    sheet.appendRow([
+      wId, savedMonth, desc,
+      withdrawnAmt, (withdrawnAmt / rate).toFixed(2),
+      'withdrawal', body.date,
+      isFullWithdraw ? '' : body.id   // sourceSavingId empty when fully deleted
+    ]);
+
+    if (isFullWithdraw) {
+      // 2a. Delete saving row
+      sheet.deleteRow(i + 1);
+    } else {
+      // 2b. Reduce saving amount
+      var remaining = currentAmt - withdrawnAmt;
+      sheet.getRange(i + 1, 4).setValue(remaining);
+      sheet.getRange(i + 1, 5).setValue((remaining / rate).toFixed(2));
+    }
+    return jsonResponse({ ok: true, withdrawalId: wId, isFullWithdraw: isFullWithdraw });
+  }
+  return jsonResponse({ error: 'Savings entry not found' });
+}
+
+function deleteSaving(body) {
+  var sheet = getOrCreateSavingsSheet();
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i &lt; rows.length; i++) {
+    if (String(rows[i][0]) === String(body.id)) {
+      sheet.deleteRow(i + 1);
+      return jsonResponse({ ok: true });
+    }
+  }
+  return jsonResponse({ error: 'Savings entry not found' });
+}
+
+function deleteWithdrawal(body) {
+  // Delete withdrawal row and restore the saving amount (or recreate the saving row)
+  var sheet = getOrCreateSavingsSheet();
+  var rows  = sheet.getDataRange().getValues();
+  var rate  = getRate_().rate;
+  for (var i = 1; i &lt; rows.length; i++) {
+    if (String(rows[i][0]) !== String(body.id)) continue;
+    var withdrawnAmt   = Number(rows[i][3]);
+    var savedMonth     = String(rows[i][1]);
+    var desc           = rows[i][2];
+    var sourceSavingId = rows[i][7] ? String(rows[i][7]) : '';
+
+    // Delete the withdrawal row
+    sheet.deleteRow(i + 1);
+
+    // Restore saving
+    if (sourceSavingId) {
+      // Partial withdrawal: find existing saving and add back amount
+      var rows2 = sheet.getDataRange().getValues();
+      for (var j = 1; j &lt; rows2.length; j++) {
+        if (String(rows2[j][0]) === sourceSavingId &amp;&amp; rows2[j][5] === 'saving') {
+          var newAmt = Number(rows2[j][3]) + withdrawnAmt;
+          sheet.getRange(j + 1, 4).setValue(newAmt);
+          sheet.getRange(j + 1, 5).setValue((newAmt / rate).toFixed(2));
+          return jsonResponse({ ok: true, updatedSavingId: sourceSavingId, newAmt: newAmt });
+        }
+      }
+    }
+    // Full withdrawal (saving was deleted): recreate saving row
+    var newId = String(Date.now() + 1);
+    sheet.appendRow([newId, savedMonth, desc, withdrawnAmt, (withdrawnAmt / rate).toFixed(2), 'saving', '', '']);
+    return jsonResponse({ ok: true, newSavingId: newId });
+  }
+  return jsonResponse({ error: 'Withdrawal entry not found' });
+}
+
+// â”€â”€ RATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function getRate_() {
+  const props = PropertiesService.getScriptProperties();
+  return { rate: parseInt(props.getProperty('rate') || '90000') };
+}
+
+function getRate() {
+  return jsonResponse(getRate_());
+}
+
+function setRate(body) {
+  PropertiesService.getScriptProperties().setProperty('rate', String(body.rate));
+  return jsonResponse({ ok: true });
+}
+
+// â”€â”€ UTIL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function jsonResponse(data) {
+  return ContentService
+    .createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}</pre>
           </div>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Save the script</strong>
           <p>Click the floppy disk icon or press <b>Ctrl+S</b> / <b>Cmd+S</b>.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Run it once to grant permissions</strong>
-          <p>Click the <b>▶ Run</b> button. Google will ask for permissions — click <b>Review permissions</b>, choose your account, then click <b>Advanced</b> → <b>Go to Masraf (unsafe)</b> → <b>Allow</b>.</p>
-          <div class="notice info" style="margin-top:8px;">This warning is normal — it just means the script was not published by Google. It is your own code running in your own account.</div>
+          <p>Click the <b>â–¶ Run</b> button. Google will ask for permissions â€” click <b>Review permissions</b>, choose your account, then click <b>Advanced</b> â†’ <b>Go to Masraf (unsafe)</b> â†’ <b>Allow</b>.</p>
+          <div class="notice info" style="margin-top:8px;">This warning is normal â€” it just means the script was not published by Google. It is your own code running in your own account.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 3 — DEPLOY -->
+  <!-- STEP 3 â€” DEPLOY -->
   <div class="section" id="s3">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">3</div>
@@ -259,38 +707,38 @@
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Open the deploy dialog</strong>
-          <p>In the Apps Script editor, click <b>Deploy</b> (top right) → <b>New deployment</b>.</p>
+          <p>In the Apps Script editor, click <b>Deploy</b> (top right) â†’ <b>New deployment</b>.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Select Web app as the type</strong>
-          <p>Click the gear ⚙ icon next to "Select type" and choose <b>Web app</b>.</p>
+          <p>Click the gear âš™ icon next to "Select type" and choose <b>Web app</b>.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Configure the settings</strong>
           <p>Fill in as follows:</p>
           <p style="margin-top:6px;">Description: <span class="tag">Masraf</span></p>
           <p>Execute as: <span class="tag">Me</span></p>
           <p>Who has access: <span class="tag">Anyone</span></p>
-          <div class="notice warn" style="margin-top:8px;"><b>Why "Anyone"?</b> The app runs from your phone without being signed in to Google. Setting access to "Anyone" allows it to communicate with your sheet silently. The URL is a long random string — nobody can guess it.</div>
+          <div class="notice warn" style="margin-top:8px;"><b>Why "Anyone"?</b> The app runs from your phone without being signed in to Google. Setting access to "Anyone" allows it to communicate with your sheet silently. The URL is a long random string â€” nobody can guess it.</div>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Copy the Web App URL</strong>
           <p>Click <b>Deploy</b>. Google will show you a URL that looks like:</p>
           <div class="url-demo">
             <span>https://script.google.com/macros/s/AKfyc.../exec</span>
-            <span class="arrow">←</span>
+            <span class="arrow">â†</span>
           </div>
           <div class="notice warn" style="margin-top:8px;"><b>Save this URL.</b> You will need it in the next step. If you lose it, see Section 10 to retrieve it.</div>
         </div>
@@ -298,7 +746,7 @@
     </div>
   </div>
 
-  <!-- STEP 4 — CONNECT -->
+  <!-- STEP 4 â€” CONNECT -->
   <div class="section" id="s4">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">4</div>
@@ -307,21 +755,21 @@
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Open the app</strong>
           <p>Go to the Masraf app URL in your browser. You will see the connection screen.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Paste the Web App URL</strong>
           <p>Paste the URL you copied in Step 3 into the input field on the setup screen.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Tap Connect &amp; Start</strong>
           <p>The app will connect to your Google Sheet. The sync dot in the top-right corner will turn <b>green</b> once the connection is confirmed. You are ready to go.</p>
@@ -340,11 +788,11 @@
   </div>
 
 
-  <!-- ══════════════════════════════════════ -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <!-- USAGE SECTION                          -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 
-  <!-- STEP 5 — HOME SCREEN -->
+  <!-- STEP 5 â€” HOME SCREEN -->
   <div class="section" id="s5">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">5</div>
@@ -373,7 +821,7 @@
     </div>
   </div>
 
-  <!-- STEP 6 — LOGGING -->
+  <!-- STEP 6 â€” LOGGING -->
   <div class="section" id="s6">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">6</div>
@@ -384,7 +832,7 @@
         <div class="step-num">1</div>
         <div class="step-body">
           <strong>Type the category</strong>
-          <p>Enter a short label — e.g. <b>Benzine</b>, <b>Groceries</b>, <b>Gym</b>.</p>
+          <p>Enter a short label â€” e.g. <b>Benzine</b>, <b>Groceries</b>, <b>Gym</b>.</p>
         </div>
       </div>
       <div class="step">
@@ -411,7 +859,7 @@
     </div>
   </div>
 
-  <!-- STEP 7 — CURRENCY -->
+  <!-- STEP 7 â€” CURRENCY -->
   <div class="section" id="s7">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">7</div>
@@ -419,14 +867,14 @@
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Updating the rate</strong>
           <p>The exchange rate is shown in the top-right corner as <span class="tag">LL/$</span>. Tap the number to edit it. The new rate is saved to your sheet and applies to all future entries.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Entering in dollars</strong>
           <p>Switch the toggle to <span class="tag">$</span> before typing. Masraf converts the amount to L.L. using the current rate before saving. All totals are always shown in both currencies.</p>
@@ -435,7 +883,7 @@
     </div>
   </div>
 
-  <!-- STEP 8 — BROWSING -->
+  <!-- STEP 8 â€” BROWSING -->
   <div class="section" id="s8">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">8</div>
@@ -443,31 +891,31 @@
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Filter by month</strong>
           <p>On <b>phone</b>: use the Month dropdown above the entries list. On <b>desktop</b>: click any month in the left sidebar. Select <b>All time</b> to see all entries across every month.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Deleting an entry</strong>
-          <p>Tap the <b>×</b> on the right of any entry to remove it. The deletion syncs to your sheet immediately.</p>
+          <p>Tap the <b>Ã—</b> on the right of any entry to remove it. The deletion syncs to your sheet immediately.</p>
         </div>
       </div>
     </div>
     <div style="margin-top:12px;">
       <div class="dot-row">
         <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">The dot in the top-right corner shows sync status:</p>
-        <div class="dot-item"><div class="dot green"></div><div class="dot-label"><b>Green</b> — saved and up to date</div></div>
-        <div class="dot-item"><div class="dot blue"></div><div class="dot-label"><b>Blue (pulsing)</b> — currently saving</div></div>
-        <div class="dot-item"><div class="dot red"></div><div class="dot-label"><b>Red</b> — connection error, check internet</div></div>
+        <div class="dot-item"><div class="dot green"></div><div class="dot-label"><b>Green</b> â€” saved and up to date</div></div>
+        <div class="dot-item"><div class="dot blue"></div><div class="dot-label"><b>Blue (pulsing)</b> â€” currently saving</div></div>
+        <div class="dot-item"><div class="dot red"></div><div class="dot-label"><b>Red</b> â€” connection error, check internet</div></div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 9 — SUMMARY -->
+  <!-- STEP 9 â€” SUMMARY -->
   <div class="section" id="s9">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">9</div>
@@ -475,14 +923,14 @@
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Summary tab</strong>
-          <p>Switch to the <b>Summary</b> tab (or panel on desktop) to see a formatted text summary of the selected month — matching the Google Keep note style.</p>
+          <p>Switch to the <b>Summary</b> tab (or panel on desktop) to see a formatted text summary of the selected month â€” matching the Google Keep note style.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">→</div>
+        <div class="step-num">â†’</div>
         <div class="step-body">
           <strong>Copy to clipboard</strong>
           <p>Tap <b>Copy to clipboard</b> to copy the full summary and paste it into Google Keep, WhatsApp, or anywhere else.</p>
@@ -491,7 +939,7 @@
     </div>
   </div>
 
-  <!-- STEP 10 — RETRIEVE URL -->
+  <!-- STEP 10 â€” RETRIEVE URL -->
   <div class="section" id="s10">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">10</div>
@@ -500,12 +948,12 @@
     <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6;">If you need the Apps Script URL again (new phone, new browser, or you cleared the app), here is how to find it without creating a new deployment.</p>
     <div class="retrieve-steps">
       <div class="retrieve-step"><span class="n">1.</span><span>Open your <b>Masraf Google Sheet</b></span></div>
-      <div class="retrieve-step"><span class="n">2.</span><span>Click <b>Extensions</b> → <b>Apps Script</b></span></div>
-      <div class="retrieve-step"><span class="n">3.</span><span>Click <b>Deploy</b> (top right) → <b>Manage deployments</b></span></div>
-      <div class="retrieve-step"><span class="n">4.</span><span>Your existing deployment is listed — click the <b>copy icon</b> next to the Web App URL</span></div>
+      <div class="retrieve-step"><span class="n">2.</span><span>Click <b>Extensions</b> â†’ <b>Apps Script</b></span></div>
+      <div class="retrieve-step"><span class="n">3.</span><span>Click <b>Deploy</b> (top right) â†’ <b>Manage deployments</b></span></div>
+      <div class="retrieve-step"><span class="n">4.</span><span>Your existing deployment is listed â€” click the <b>copy icon</b> next to the Web App URL</span></div>
       <div class="retrieve-step"><span class="n">5.</span><span>Paste that URL into the app setup screen and tap <b>Connect &amp; Start</b></span></div>
     </div>
-    <div class="notice warn" style="margin-top:12px;"><b>Important:</b> always use <b>Manage deployments</b> to retrieve your URL. Do not click "New deployment" — that generates a different URL and disconnects any devices using the old one.</div>
+    <div class="notice warn" style="margin-top:12px;"><b>Important:</b> always use <b>Manage deployments</b> to retrieve your URL. Do not click "New deployment" â€” that generates a different URL and disconnects any devices using the old one.</div>
   </div>
 
   <div class="help-box">
