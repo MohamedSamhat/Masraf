@@ -1,176 +1,303 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0f0f0f" />
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
-  <link rel="shortcut icon" href="icon-192.png" />
-  <title>Masraf â€” Instructions</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <title>Masraf &#8211; Setup Instructions</title>
   <style>
     :root {
-      --bg: #0f0f0f;
-      --surface: #1a1a1a;
-      --surface2: #242424;
-      --border: #2e2e2e;
-      --accent: #c8f060;
-      --accent2: #60d4f0;
-      --text: #f0ede8;
-      --muted: #777;
-      --danger: #ff5a5a;
-      --warning: #f0a060;
-      --radius: 14px;
-      --mono: 'Space Mono', monospace;
-      --sans: 'Syne', sans-serif;
+      --bg:       #0f0f0f;
+      --surface:  #1a1a1a;
+      --surface2: #141414;
+      --border:   #2a2a2a;
+      --text:     #e8e8e8;
+      --muted:    #888;
+      --accent:   #c8f060;
+      --accent2:  #60d4f0;
+      --danger:   #f06060;
+      --warning:  #f0a060;
+      --savings:  #a060f0;
+      --mono:     'Courier New', Courier, monospace;
+      --sans:     -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --radius:   10px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { min-height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      padding: 24px 16px 60px;
+    }
 
-    .page { max-width: 680px; margin: 0 auto; padding: 28px 20px 72px; }
+    /* ── LAYOUT ─────────────────────────────────────────────────────────── */
+    .container { max-width: 680px; margin: 0 auto; }
 
-    /* TOP BAR */
-    .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
-    .logo { font-size: 22px; font-weight: 800; text-decoration: none; color: var(--text); }
-    .logo span { color: var(--accent); }
-    .back-btn { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; text-decoration: none; transition: color 0.15s; }
-    .back-btn:hover { color: var(--text); }
+    /* ── HEADER ─────────────────────────────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      padding: 32px 0 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .page-header .logo {
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2px;
+    }
+    .page-header .tagline {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
 
-    /* HERO */
-    .hero { margin-bottom: 36px; }
-    .hero h1 { font-size: 26px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
-    .hero h1 span { color: var(--accent); }
-    .hero p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    /* ── TABLE OF CONTENTS ──────────────────────────────────────────────── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 32px;
+    }
+    .toc-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .toc ul { list-style: none; }
+    .toc li { padding: 3px 0; }
+    .toc a { color: var(--accent2); text-decoration: none; font-size: 13px; }
+    .toc a:hover { text-decoration: underline; }
+    .toc-num { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-right: 8px; }
 
-    /* TABLE OF CONTENTS */
-    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 36px; }
-    .toc-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
-    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-    .toc-list li { display: flex; align-items: center; gap: 10px; }
-    .toc-num { font-family: var(--mono); font-size: 10px; color: var(--accent); min-width: 20px; }
-    .toc-list a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.15s; }
-    .toc-list a:hover { color: var(--text); }
-    .toc-badge { font-size: 10px; font-family: var(--mono); background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; color: var(--accent2); }
+    /* ── SECTION ─────────────────────────────────────────────────────────── */
+    .section { margin-bottom: 28px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+    .section-header:hover { border-color: var(--accent2); }
+    .step-num {
+      width: 26px; height: 26px;
+      background: var(--border);
+      border: 1px solid #3a3a3a;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      color: var(--muted); flex-shrink: 0;
+    }
+    .section-label { font-weight: 600; font-size: 14px; flex: 1; }
+    .section-sub { font-size: 11px; color: var(--muted); }
 
-    /* SECTION */
-    .section { margin-bottom: 36px; scroll-margin-top: 20px; }
-    .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-    .section-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 12px; color: #0f0f0f; font-weight: 700; flex-shrink: 0; }
-    .section-num.plain { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
-    .section-label { font-size: 15px; font-weight: 800; color: var(--text); }
-    .section-sub { font-size: 12px; color: var(--muted); margin-left: auto; font-family: var(--mono); }
+    /* ── STEPS ───────────────────────────────────────────────────────────── */
+    .steps { padding-left: 4px; }
+    .step {
+      display: flex;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step .step-num {
+      width: 22px; height: 22px; font-size: 11px;
+      background: none; border: 1px solid var(--border);
+      color: var(--accent); flex-shrink: 0; margin-top: 2px;
+    }
+    .step-body { flex: 1; font-size: 13px; color: var(--muted); }
+    .step-body strong { color: var(--text); display: block; margin-bottom: 3px; }
+    .step-body p { margin-top: 4px; }
+    .path {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent2);
+    }
+    b { color: var(--text); }
 
-    /* DIVIDER */
-    .divider { display: flex; align-items: center; gap: 12px; margin: 40px 0 36px; }
-    .divider-line { flex: 1; height: 1px; background: var(--border); }
-    .divider-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); white-space: nowrap; padding: 4px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; }
-
-    /* STEPS */
-    .steps { display: flex; flex-direction: column; gap: 10px; }
-    .step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; }
-    .step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
-    .step-body { flex: 1; min-width: 0; }
-    .step-body strong { font-size: 14px; font-weight: 600; color: var(--text); display: block; margin-bottom: 5px; }
-    .step-body p { font-size: 13px; color: var(--muted); line-height: 1.65; }
-    .step-body p + p { margin-top: 6px; }
-    .step-body p b { color: var(--text); font-weight: 600; }
-    .tag { display: inline-block; font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px; color: var(--accent2); margin: 1px 2px 0 0; }
-    .path { font-family: var(--mono); font-size: 12px; color: var(--accent); background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
-
-    /* CODE BLOCK */
-    .code-block { margin-top: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-    .code-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--border); }
-    .code-lang { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-    .copy-code-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--accent); font-family: var(--sans); font-size: 11px; font-weight: 600; padding: 4px 10px; cursor: pointer; transition: background 0.15s; }
+    /* ── CODE BLOCK ──────────────────────────────────────────────────────── */
+    .code-block {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .code-lang {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .copy-code-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--accent);
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
     .copy-code-btn:hover { background: var(--border); }
-    .code-block pre { font-family: var(--mono); font-size: 11px; line-height: 1.7; color: var(--text); padding: 14px; overflow-x: auto; white-space: pre; }
-    .code-block pre::-webkit-scrollbar { height: 4px; }
-    .code-block pre::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-    /* WARNING / NOTICE */
-    .notice { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 12px 16px; font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 10px; }
+    /* COLLAPSIBLE WRAPPER */
+    .code-preview-wrap {
+      position: relative;
+      overflow-x: auto;
+    }
+    .code-preview-wrap.collapsed {
+      max-height: 220px;
+      overflow: hidden;
+    }
+    .code-preview-wrap::-webkit-scrollbar { height: 4px; }
+    .code-preview-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* GRADIENT FADE OVERLAY */
+    .code-fade {
+      display: none;
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 110px;
+      background: linear-gradient(to bottom, transparent, var(--surface2));
+      pointer-events: none;
+    }
+    .code-preview-wrap.collapsed .code-fade { display: block; }
+
+    /* PRE */
+    .code-block pre {
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--text);
+      padding: 14px;
+      white-space: pre;
+      min-width: max-content;
+    }
+
+    /* SHOW MORE BUTTON */
+    .show-more-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      border-top: 1px solid var(--border);
+      color: var(--accent);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .show-more-btn:hover { background: rgba(200,240,96,0.07); }
+    .show-more-btn:active { background: rgba(200,240,96,0.13); }
+
+    /* ── NOTICE / WARNING ────────────────────────────────────────────────── */
+    .notice {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 10px;
+    }
     .notice b { color: var(--text); font-weight: 600; }
     .notice.warn { border-left-color: var(--warning); }
     .notice.info { border-left-color: var(--accent2); }
 
-    /* URL INPUT DEMO */
-    .url-demo { display: flex; align-items: center; gap: 8px; margin-top: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; }
-    .url-demo span { font-family: var(--mono); font-size: 12px; color: var(--muted); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .url-demo .arrow { color: var(--accent); font-size: 16px; flex-shrink: 0; }
-
-    /* STATUS DOTS */
-    .dot-row { display: flex; flex-direction: column; gap: 8px; }
-    .dot-item { display: flex; align-items: center; gap: 12px; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .dot.green { background: var(--accent); }
-    .dot.blue  { background: var(--accent2); }
-    .dot.red   { background: var(--danger); }
-    .dot.gray  { background: var(--muted); }
-    .dot-label { font-size: 13px; color: var(--muted); }
-    .dot-label b { color: var(--text); font-weight: 600; }
-
-    /* PLATFORM GRID */
-    .platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .platform-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
-    .platform-name { font-size: 13px; font-weight: 600; color: var(--accent2); margin-bottom: 8px; }
-    .platform-steps { list-style: none; display: flex; flex-direction: column; gap: 5px; }
-    .platform-steps li { font-size: 12px; color: var(--muted); line-height: 1.5; padding-left: 14px; position: relative; }
-    .platform-steps li::before { content: 'â†’'; position: absolute; left: 0; color: var(--accent); }
-
-    /* RETRIEVE URL */
-    .retrieve-steps { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
-    .retrieve-step { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .retrieve-step .n { font-family: var(--mono); font-size: 11px; color: var(--accent); min-width: 18px; margin-top: 2px; }
-    .retrieve-step b { color: var(--text); font-weight: 600; }
-
-    /* HELP BOX */
-    .help-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; text-align: center; margin-top: 36px; }
-    .help-box p { font-size: 13px; color: var(--muted); line-height: 1.7; }
-    .help-box p b { color: var(--text); }
-
-    @media (max-width: 480px) {
-      .platform-grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 22px; }
-      .section-sub { display: none; }
+    /* ── URL BOX ─────────────────────────────────────────────────────────── */
+    .url-demo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
     }
+    .url-demo span {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ── HELP BOX ─────────────────────────────────────────────────────────── */
+    .help-box {
+      text-align: center;
+      padding: 28px 16px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .help-box b { color: var(--text); }
   </style>
 </head>
 <body>
-<div class="page">
+<div class="container">
 
-  <div class="top-bar">
-    <a class="logo" href="index.html">mas<span>raf</span></a>
-    <a class="back-btn" href="index.html">â† Back to app</a>
-  </div>
-
-  <div class="hero">
-    <h1><span>Masraf</span> â€” Setup &amp; User Guide</h1>
-    <p>Everything you need to get the app running and start tracking your daily spending.</p>
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="logo">MASRAF</div>
+    <div class="tagline">Setup Instructions &mdash; Google Sheets + Apps Script</div>
   </div>
 
   <!-- TABLE OF CONTENTS -->
   <div class="toc">
     <div class="toc-title">Contents</div>
-    <ul class="toc-list">
-      <li><span class="toc-num">01</span><a href="#s1">Create a Google Sheet</a> <span class="toc-badge">setup</span></li>
-      <li><span class="toc-num">02</span><a href="#s2">Add the backend script</a> <span class="toc-badge">setup</span></li>
-      <li><span class="toc-num">03</span><a href="#s3">Deploy as a web app</a> <span class="toc-badge">setup</span></li>
-      <li><span class="toc-num">04</span><a href="#s4">Connect the app</a> <span class="toc-badge">setup</span></li>
-      <li><span class="toc-num">05</span><a href="#s5">Add to your home screen</a></li>
-      <li><span class="toc-num">06</span><a href="#s6">Logging an expense</a></li>
-      <li><span class="toc-num">07</span><a href="#s7">Currency &amp; exchange rate</a></li>
-      <li><span class="toc-num">08</span><a href="#s8">Browsing &amp; filtering</a></li>
-      <li><span class="toc-num">09</span><a href="#s9">Summary &amp; export</a></li>
-      <li><span class="toc-num">10</span><a href="#s10">Retrieve your connection URL</a></li>
+    <ul>
+      <li><span class="toc-num">01</span><a href="#s1">Create a Google Sheet</a></li>
+      <li><span class="toc-num">02</span><a href="#s2">Open Apps Script</a></li>
+      <li><span class="toc-num">03</span><a href="#s3">Paste the backend code</a></li>
+      <li><span class="toc-num">04</span><a href="#s4">Save the script</a></li>
+      <li><span class="toc-num">05</span><a href="#s5">Run once to grant permissions</a></li>
+      <li><span class="toc-num">06</span><a href="#s6">Create a new deployment</a></li>
+      <li><span class="toc-num">07</span><a href="#s7">Select Web app type</a></li>
+      <li><span class="toc-num">08</span><a href="#s8">Configure access settings</a></li>
+      <li><span class="toc-num">09</span><a href="#s9">Deploy and copy the URL</a></li>
+      <li><span class="toc-num">10</span><a href="#s10">Enter the URL in Masraf</a></li>
     </ul>
   </div>
 
-
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-  <!-- SETUP SECTION                          -->
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-
-  <!-- STEP 1 â€” GOOGLE SHEET -->
+  <!-- STEP 1 -->
   <div class="section" id="s1">
     <div class="section-header">
       <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">1</div>
@@ -179,62 +306,80 @@
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">â†’</div>
+        <div class="step-num">&#8594;</div>
         <div class="step-body">
-          <strong>Open Google Sheets</strong>
-          <p>Go to <a href="https://sheets.google.com" target="_blank" style="color:var(--accent2);text-decoration:none;">sheets.google.com</a> and sign in with your Google account.</p>
+          <strong>Go to Google Sheets</strong>
+          <p>Open <b>sheets.google.com</b> and click <b>Blank spreadsheet</b> to create a new one.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">â†’</div>
+        <div class="step-num">&#8594;</div>
         <div class="step-body">
-          <strong>Create a new spreadsheet</strong>
-          <p>Click the large <b>+</b> (Blank) button to create a new spreadsheet. Rename it <b>Masraf</b> by clicking "Untitled spreadsheet" at the top left.</p>
+          <strong>Name your spreadsheet</strong>
+          <p>Click the title at the top-left and rename it to <b>Masraf</b> (or any name you prefer).</p>
+        </div>
+      </div>
+      <div class="notice info" style="margin-top:8px;">
+        The backend script will automatically create all the required sheets (<b>Spending</b>, <b>Income</b>, <b>Scheduled</b>, <b>Savings</b>) on first use. You don't need to create them manually.
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">2</div>
+      <div class="section-label">Open Apps Script</div>
+      <div class="section-sub">~30 sec</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">&#8594;</div>
+        <div class="step-body">
+          <strong>Open the script editor</strong>
+          <p>In your Google Sheet, click the menu: <span class="path">Extensions</span> &#8594; <span class="path">Apps Script</span>. A new tab will open with a code editor.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">â†’</div>
+        <div class="step-num">&#8594;</div>
         <div class="step-body">
-          <strong>Leave it open</strong>
-          <p>Keep this tab open â€” you'll need it in the next step.</p>
+          <strong>Clear the default code</strong>
+          <p>You will see a default empty function. Select all (<b>Ctrl+A</b> or <b>Cmd+A</b>) and delete it before pasting.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 2 â€” APPS SCRIPT -->
-  <div class="section" id="s2">
+  <!-- STEP 3 -->
+  <div class="section" id="s3">
     <div class="section-header">
-      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">2</div>
-      <div class="section-label">Add the backend script</div>
-      <div class="section-sub">~2 min</div>
+      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">3</div>
+      <div class="section-label">Paste the backend code</div>
+      <div class="section-sub">~1 min</div>
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">â†’</div>
+        <div class="step-num">&#8594;</div>
         <div class="step-body">
-          <strong>Open Apps Script</strong>
-          <p>In your Google Sheet, click the menu: <span class="path">Extensions</span> â†’ <span class="path">Apps Script</span>. A new tab will open with a code editor.</p>
+          <strong>Copy and paste the full code below</strong>
+          <p>Use the <b>Copy code</b> button, then paste it into the Apps Script editor.</p>
         </div>
       </div>
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Replace the existing code</strong>
-          <p>Select all the existing code in the editor (<b>Ctrl+A</b> or <b>Cmd+A</b>), then delete it. Copy the code below and paste it in.</p>
-          <div class="code-block">
+    </div>
+    <div class="code-block">
             <div class="code-header">
-              <span class="code-lang">Code.gs â€” Apps Script</span>
+              <span class="code-lang">Code.gs &mdash; Apps Script</span>
               <button class="copy-code-btn" onclick="copyCode()">Copy code</button>
             </div>
-            <pre id="codeContent">// MASRAF - Google Apps Script Backend
+            <div class="code-preview-wrap collapsed" id="codeWrap">
+              <pre id="codeContent">// MASRAF - Google Apps Script Backend
 
 const SHEET_NAME          = 'Spending';
 const INCOME_SHEET_NAME   = 'Income';
 const SCHEDULED_SHEET_NAME = 'Scheduled';
 const SAVINGS_SHEET_NAME  = 'Savings';
 
-// â”€â”€ SHEET HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── SHEET HELPERS ─────────────────────────────────────────────────────────────
 
 function normalizeSheetDate(date) {
   if (date instanceof Date) {
@@ -260,7 +405,7 @@ function getOrCreateSheet() {
     sheet.appendRow(['ID','Date','Category','Amount (LL)','Amount ($)','Timestamp']);
     sheet.setFrozenRows(1);
     styleHeader(sheet, 6, '#c8f060');
-    [80,80,180,120,100,160].forEach((w,i) => sheet.setColumnWidth(i+1, w));
+    [80,80,180,120,100,160].forEach((w,i) =&gt; sheet.setColumnWidth(i+1, w));
   }
   return sheet;
 }
@@ -273,7 +418,7 @@ function getOrCreateIncomeSheet() {
     sheet.appendRow(['ID','Date','Description','Amount (LL)','Amount ($)','Timestamp']);
     sheet.setFrozenRows(1);
     styleHeader(sheet, 6, '#60d4f0');
-    [80,80,180,120,100,160].forEach((w,i) => sheet.setColumnWidth(i+1, w));
+    [80,80,180,120,100,160].forEach((w,i) =&gt; sheet.setColumnWidth(i+1, w));
   }
   return sheet;
 }
@@ -286,14 +431,14 @@ function getOrCreateScheduledSheet() {
     sheet.appendRow(['ID','Month','Description','Amount (LL)','Amount ($)','Status','Spent Date','Spent Entry ID']);
     sheet.setFrozenRows(1);
     styleHeader(sheet, 8, '#f0a060');
-    [80,80,180,120,100,80,100,120].forEach((w,i) => sheet.setColumnWidth(i+1, w));
+    [80,80,180,120,100,80,100,120].forEach((w,i) =&gt; sheet.setColumnWidth(i+1, w));
   }
   // Force Month column (B) to plain text so Google Sheets never auto-converts MM/YYYY to a Date
   sheet.getRange('B:B').setNumberFormat('@');
   return sheet;
 }
 
-// â”€â”€ ROUTING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── ROUTING ───────────────────────────────────────────────────────────────────
 
 function doGet(e) {
   const action = e.parameter.action;
@@ -328,7 +473,7 @@ function doPost(e) {
   }
 }
 
-// â”€â”€ SPENDING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── SPENDING ──────────────────────────────────────────────────────────────────
 
 function getAll() {
   const sheet = getOrCreateSheet();
@@ -375,7 +520,7 @@ function deleteEntry(body) {
   return jsonResponse({ error: 'Entry not found' });
 }
 
-// â”€â”€ INCOME â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── INCOME ────────────────────────────────────────────────────────────────────
 
 function getIncome() {
   const sheet = getOrCreateIncomeSheet();
@@ -410,10 +555,10 @@ function deleteIncome(body) {
   return jsonResponse({ error: 'Income entry not found' });
 }
 
-// â”€â”€ SCHEDULED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── SCHEDULED ─────────────────────────────────────────────────────────────────
 
 function normalizeMonthKey(v) {
-  // Google Sheets may auto-convert "MM/YYYY" to a Date â€” recover it safely
+  // Google Sheets may auto-convert "MM/YYYY" to a Date — recover it safely
   var d = null;
   if (v instanceof Date) {
     d = v;
@@ -424,7 +569,7 @@ function normalizeMonthKey(v) {
       var p = s.split('/');
       return (p[0].length === 1 ? '0' + p[0] : p[0]) + '/' + p[1];
     }
-    // Might be a Date.toString() â€” try parsing
+    // Might be a Date.toString() — try parsing
     if (s.length &gt; 7) {
       var parsed = new Date(s);
       if (!isNaN(parsed.getTime())) d = parsed;
@@ -516,20 +661,19 @@ function deleteScheduled(body) {
   return jsonResponse({ error: 'Scheduled entry not found' });
 }
 
-// â”€â”€ SAVINGS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── SAVINGS ───────────────────────────────────────────────────────────────────
 
 function getOrCreateSavingsSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sheet = ss.getSheetByName(SAVINGS_SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SAVINGS_SHEET_NAME);
-    // Col: ID | Month(saving's month) | Description | Amount(LL) | Amount($) | Status | Date(withdrawal day) | Source Saving ID
     sheet.appendRow(['ID','Month','Description','Amount (LL)','Amount ($)','Status','Date','Source Saving ID']);
     sheet.setFrozenRows(1);
     styleHeader(sheet, 8, '#a060f0');
-    [80,80,180,120,100,100,120,120].forEach((w,i) => sheet.setColumnWidth(i+1, w));
+    [80,80,180,120,100,100,120,120].forEach((w,i) =&gt; sheet.setColumnWidth(i+1, w));
   }
-  // Force Month and Date columns to plain text â€” prevents Google Sheets auto-date conversion
+  // Force Month and Date columns to plain text — prevents Google Sheets auto-date conversion
   sheet.getRange('B:B').setNumberFormat('@');
   sheet.getRange('G:G').setNumberFormat('@');
   sheet.getRange('H:H').setNumberFormat('@');
@@ -543,7 +687,7 @@ function getSavings() {
   for (var i = 1; i &lt; rows.length; i++) {
     if (!rows[i][0]) continue;
     var status = String(rows[i][5] || 'saving');
-    // Normalise: old 'withdrawn' rows from previous schema â†’ treat as 'saving'
+    // Normalise: old 'withdrawn' rows from previous schema — treat as 'saving'
     if (status !== 'saving' &amp;&amp; status !== 'withdrawal') status = 'saving';
     entries.push({
       id:            String(rows[i][0]),
@@ -654,7 +798,7 @@ function deleteWithdrawal(body) {
   return jsonResponse({ error: 'Withdrawal entry not found' });
 }
 
-// â”€â”€ RATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── RATE ──────────────────────────────────────────────────────────────────────
 
 function getRate_() {
   const props = PropertiesService.getScriptProperties();
@@ -670,406 +814,236 @@ function setRate(body) {
   return jsonResponse({ ok: true });
 }
 
-// â”€â”€ UTIL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── UTIL ──────────────────────────────────────────────────────────────────────
 
 function jsonResponse(data) {
   return ContentService
     .createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
 }</pre>
-          </div>
-        </div>
-      </div>
+              <div class="code-fade"></div>
+            </div>
+            <button class="show-more-btn" id="showMoreBtn" onclick="toggleCode()">
+              <span id="showMoreLabel">&#9660; Show full code</span>
+            </button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">4</div>
+      <div class="section-label">Save the script</div>
+      <div class="section-sub">~5 sec</div>
+    </div>
+    <div class="steps">
       <div class="step">
-        <div class="step-num">â†’</div>
+        <div class="step-num">&#8594;</div>
         <div class="step-body">
-          <strong>Save the script</strong>
-          <p>Click the floppy disk icon or press <b>Ctrl+S</b> / <b>Cmd+S</b>.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Run it once to grant permissions</strong>
-          <p>Click the <b>â–¶ Run</b> button. Google will ask for permissions â€” click <b>Review permissions</b>, choose your account, then click <b>Advanced</b> â†’ <b>Go to Masraf (unsafe)</b> â†’ <b>Allow</b>.</p>
-          <div class="notice info" style="margin-top:8px;">This warning is normal â€” it just means the script was not published by Google. It is your own code running in your own account.</div>
+          <strong>Save using keyboard or toolbar</strong>
+          <p>Press <b>Ctrl+S</b> (Windows) or <b>Cmd+S</b> (Mac), or click the floppy disk icon in the toolbar.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 3 â€” DEPLOY -->
-  <div class="section" id="s3">
+  <!-- STEP 5 -->
+  <div class="section" id="s5">
     <div class="section-header">
-      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">3</div>
-      <div class="section-label">Deploy as a web app</div>
+      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">5</div>
+      <div class="section-label">Run once to grant permissions</div>
       <div class="section-sub">~1 min</div>
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">â†’</div>
+        <div class="step-num">&#8594;</div>
         <div class="step-body">
-          <strong>Open the deploy dialog</strong>
-          <p>In the Apps Script editor, click <b>Deploy</b> (top right) â†’ <b>New deployment</b>.</p>
+          <strong>Select a function to run</strong>
+          <p>In the toolbar, make sure the function dropdown shows <b>doGet</b> or any function name (e.g. <b>getAll</b>).</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">â†’</div>
+        <div class="step-num">&#8594;</div>
         <div class="step-body">
-          <strong>Select Web app as the type</strong>
-          <p>Click the gear âš™ icon next to "Select type" and choose <b>Web app</b>.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Configure the settings</strong>
-          <p>Fill in as follows:</p>
-          <p style="margin-top:6px;">Description: <span class="tag">Masraf</span></p>
-          <p>Execute as: <span class="tag">Me</span></p>
-          <p>Who has access: <span class="tag">Anyone</span></p>
-          <div class="notice warn" style="margin-top:8px;"><b>Why "Anyone"?</b> The app runs from your phone without being signed in to Google. Setting access to "Anyone" allows it to communicate with your sheet silently. The URL is a long random string â€” nobody can guess it.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Copy the Web App URL</strong>
-          <p>Click <b>Deploy</b>. Google will show you a URL that looks like:</p>
-          <div class="url-demo">
-            <span>https://script.google.com/macros/s/AKfyc.../exec</span>
-            <span class="arrow">â†</span>
+          <strong>Click the Run button</strong>
+          <p>Click the <b>&#9654; Run</b> button. Google will ask for permissions &mdash; click <b>Review permissions</b>, choose your account, then click <b>Advanced</b> &#8594; <b>Go to Masraf (unsafe)</b> &#8594; <b>Allow</b>.</p>
+          <div class="notice info" style="margin-top:8px;">
+            This warning is normal &mdash; it just means the script was not published by Google. It is your own code running in your own account.
           </div>
-          <div class="notice warn" style="margin-top:8px;"><b>Save this URL.</b> You will need it in the next step. If you lose it, see Section 10 to retrieve it.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 4 â€” CONNECT -->
-  <div class="section" id="s4">
+  <!-- STEP 6 -->
+  <div class="section" id="s6">
     <div class="section-header">
-      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">4</div>
-      <div class="section-label">Connect the app to your sheet</div>
+      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">6</div>
+      <div class="section-label">Create a new deployment</div>
+      <div class="section-sub">~1 min</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">&#8594;</div>
+        <div class="step-body">
+          <strong>Open the Deploy menu</strong>
+          <p>In the Apps Script editor, click <b>Deploy</b> in the top-right area, then choose <b>New deployment</b>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">7</div>
+      <div class="section-label">Select Web app type</div>
+      <div class="section-sub">~15 sec</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">&#8594;</div>
+        <div class="step-body">
+          <strong>Choose the deployment type</strong>
+          <p>Click the gear &#9881; icon next to <b>Select type</b> and choose <b>Web app</b>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">8</div>
+      <div class="section-label">Configure access settings</div>
+      <div class="section-sub">~15 sec</div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">&#8594;</div>
+        <div class="step-body">
+          <strong>Execute as: Me</strong>
+          <p>Under <b>Execute as</b>, select <b>Me</b> (your Google account).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">&#8594;</div>
+        <div class="step-body">
+          <strong>Who has access: Anyone</strong>
+          <p>Under <b>Who has access</b>, select <b>Anyone</b>. This allows the app to call the backend without requiring sign-in.</p>
+          <div class="notice warn" style="margin-top:8px;">
+            <b>Note:</b> Selecting <b>Anyone</b> makes the URL publicly accessible. Do not share the URL with people you do not trust, as it gives write access to your spreadsheet.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 9 -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">9</div>
+      <div class="section-label">Deploy and copy the URL</div>
       <div class="section-sub">~30 sec</div>
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-num">â†’</div>
+        <div class="step-num">&#8594;</div>
         <div class="step-body">
-          <strong>Open the app</strong>
-          <p>Go to the Masraf app URL in your browser. You will see the connection screen.</p>
+          <strong>Click Deploy</strong>
+          <p>Click the <b>Deploy</b> button. If prompted again for permissions, follow the same steps as before and click <b>Allow</b>.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">â†’</div>
+        <div class="step-num">&#8594;</div>
         <div class="step-body">
-          <strong>Paste the Web App URL</strong>
-          <p>Paste the URL you copied in Step 3 into the input field on the setup screen.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Tap Connect &amp; Start</strong>
-          <p>The app will connect to your Google Sheet. The sync dot in the top-right corner will turn <b>green</b> once the connection is confirmed. You are ready to go.</p>
-        </div>
-      </div>
-    </div>
-    <div class="notice" style="margin-top:12px;"><b>Using on multiple devices?</b> Just open the app URL on any other phone or computer and paste the same Web App URL. All your data will load automatically.</div>
-  </div>
-
-
-  <!-- DIVIDER -->
-  <div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-label">Using the app</div>
-    <div class="divider-line"></div>
-  </div>
-
-
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-  <!-- USAGE SECTION                          -->
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-
-  <!-- STEP 5 â€” HOME SCREEN -->
-  <div class="section" id="s5">
-    <div class="section-header">
-      <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">5</div>
-      <div class="section-label">Add to your home screen</div>
-    </div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6;">For the best experience, add Masraf to your phone home screen so it opens fullscreen like a native app.</p>
-    <div class="platform-grid">
-      <div class="platform-card">
-        <div class="platform-name">iPhone (Safari)</div>
-        <ul class="platform-steps">
-          <li>Open the app URL in Safari</li>
-          <li>Tap the Share button</li>
-          <li>Tap "Add to Home Screen"</li>
-          <li>Tap Add</li>
-        </ul>
-      </div>
-      <div class="platform-card">
-        <div class="platform-name">Android (Chrome)</div>
-        <ul class="platform-steps">
-          <li>Open the app URL in Chrome</li>
-          <li>Tap the 3-dot menu</li>
-          <li>Tap "Add to Home Screen"</li>
-          <li>Tap Install</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 6 â€” LOGGING -->
-  <div class="section" id="s6">
-    <div class="section-header">
-      <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">6</div>
-      <div class="section-label">Logging an expense</div>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-body">
-          <strong>Type the category</strong>
-          <p>Enter a short label â€” e.g. <b>Benzine</b>, <b>Groceries</b>, <b>Gym</b>.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <strong>Enter the amount</strong>
-          <p>Type the amount and choose the currency using the <span class="tag">LL</span> / <span class="tag">$</span> toggle on the right. A live conversion preview appears below the field.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <strong>Set the date</strong>
-          <p>Use the three dropdowns to pick the <b>day</b>, <b>month</b>, and <b>year</b>. They default to today so you usually don't need to change anything.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-body">
-          <strong>Tap + Add</strong>
-          <p>The entry saves instantly to Google Sheets and appears grouped under its day, showing both the L.L. and $ amounts.</p>
+          <strong>Copy the Web app URL</strong>
+          <p>A dialog will appear with a <b>Web app URL</b>. It looks like:</p>
+          <div class="url-demo">
+            <span>https://script.google.com/macros/s/AKfycb.../exec</span>
+          </div>
+          <p style="margin-top:6px;">Click <b>Copy</b> to copy this URL &mdash; you will need it in the next step.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 7 â€” CURRENCY -->
-  <div class="section" id="s7">
-    <div class="section-header">
-      <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">7</div>
-      <div class="section-label">Currency &amp; exchange rate</div>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Updating the rate</strong>
-          <p>The exchange rate is shown in the top-right corner as <span class="tag">LL/$</span>. Tap the number to edit it. The new rate is saved to your sheet and applies to all future entries.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Entering in dollars</strong>
-          <p>Switch the toggle to <span class="tag">$</span> before typing. Masraf converts the amount to L.L. using the current rate before saving. All totals are always shown in both currencies.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 8 â€” BROWSING -->
-  <div class="section" id="s8">
-    <div class="section-header">
-      <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">8</div>
-      <div class="section-label">Browsing &amp; filtering</div>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Filter by month</strong>
-          <p>On <b>phone</b>: use the Month dropdown above the entries list. On <b>desktop</b>: click any month in the left sidebar. Select <b>All time</b> to see all entries across every month.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Deleting an entry</strong>
-          <p>Tap the <b>Ã—</b> on the right of any entry to remove it. The deletion syncs to your sheet immediately.</p>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:12px;">
-      <div class="dot-row">
-        <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">The dot in the top-right corner shows sync status:</p>
-        <div class="dot-item"><div class="dot green"></div><div class="dot-label"><b>Green</b> â€” saved and up to date</div></div>
-        <div class="dot-item"><div class="dot blue"></div><div class="dot-label"><b>Blue (pulsing)</b> â€” currently saving</div></div>
-        <div class="dot-item"><div class="dot red"></div><div class="dot-label"><b>Red</b> â€” connection error, check internet</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 9 â€” SUMMARY -->
-  <div class="section" id="s9">
-    <div class="section-header">
-      <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">9</div>
-      <div class="section-label">Summary &amp; export</div>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Summary tab</strong>
-          <p>Switch to the <b>Summary</b> tab (or panel on desktop) to see a formatted text summary of the selected month â€” matching the Google Keep note style.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">â†’</div>
-        <div class="step-body">
-          <strong>Copy to clipboard</strong>
-          <p>Tap <b>Copy to clipboard</b> to copy the full summary and paste it into Google Keep, WhatsApp, or anywhere else.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 10 â€” RETRIEVE URL -->
+  <!-- STEP 10 -->
   <div class="section" id="s10">
     <div class="section-header">
-      <div class="step-num" style="width:28px;height:28px;background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:12px;border:1px solid var(--border);">10</div>
-      <div class="section-label">Retrieve your connection URL</div>
+      <div class="step-num" style="width:28px;height:28px;background:var(--accent);color:#0f0f0f;font-weight:700;border:none;">10</div>
+      <div class="section-label">Enter the URL in Masraf</div>
+      <div class="section-sub">~30 sec</div>
     </div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6;">If you need the Apps Script URL again (new phone, new browser, or you cleared the app), here is how to find it without creating a new deployment.</p>
-    <div class="retrieve-steps">
-      <div class="retrieve-step"><span class="n">1.</span><span>Open your <b>Masraf Google Sheet</b></span></div>
-      <div class="retrieve-step"><span class="n">2.</span><span>Click <b>Extensions</b> â†’ <b>Apps Script</b></span></div>
-      <div class="retrieve-step"><span class="n">3.</span><span>Click <b>Deploy</b> (top right) â†’ <b>Manage deployments</b></span></div>
-      <div class="retrieve-step"><span class="n">4.</span><span>Your existing deployment is listed â€” click the <b>copy icon</b> next to the Web App URL</span></div>
-      <div class="retrieve-step"><span class="n">5.</span><span>Paste that URL into the app setup screen and tap <b>Connect &amp; Start</b></span></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">&#8594;</div>
+        <div class="step-body">
+          <strong>Open the Masraf app</strong>
+          <p>Open the Masraf PWA in your browser.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">&#8594;</div>
+        <div class="step-body">
+          <strong>Paste the URL</strong>
+          <p>In the app settings or first-run prompt, paste your Web app URL and confirm. The app will connect to your Google Sheet and load your data.</p>
+        </div>
+      </div>
+      <div class="notice info" style="margin-top:8px;">
+        <b>Tip:</b> Your URL is saved in the browser's local storage. You only need to enter it once per device.
+      </div>
     </div>
-    <div class="notice warn" style="margin-top:12px;"><b>Important:</b> always use <b>Manage deployments</b> to retrieve your URL. Do not click "New deployment" â€” that generates a different URL and disconnects any devices using the old one.</div>
   </div>
 
+  <!-- HELP -->
   <div class="help-box">
-    <p>Something not working as expected?<br>Contact <b>the person who set up this app</b> for help.</p>
+    <p>Something not working as expected?<br>Email <b><a href="mailto:ats.cube3@gmail.com">ATS Support</a></b> for help.</p>
   </div>
 
 </div>
 
 <script>
-  const rawCode = `// MASRAF - Google Apps Script Backend
-
-const SHEET_NAME = 'Spending';
-
-function getOrCreateSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) {
-    sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(['ID', 'Date', 'Category', 'Amount (LL)', 'Amount ($)', 'Timestamp']);
-    sheet.setFrozenRows(1);
-    const header = sheet.getRange(1, 1, 1, 6);
-    header.setBackground('#0f0f0f');
-    header.setFontColor('#c8f060');
-    header.setFontWeight('bold');
-    sheet.setColumnWidth(1, 80);
-    sheet.setColumnWidth(2, 80);
-    sheet.setColumnWidth(3, 180);
-    sheet.setColumnWidth(4, 120);
-    sheet.setColumnWidth(5, 100);
-    sheet.setColumnWidth(6, 160);
-  }
-  return sheet;
-}
-
-function doGet(e) {
-  const action = e.parameter.action;
-  if (action === 'getAll') return getAll();
-  if (action === 'getRate') return getRate();
-  return jsonResponse({ error: 'Unknown action' });
-}
-
-function doPost(e) {
-  try {
-    const body = JSON.parse(e.postData.contents);
-    if (body.action === 'add') return addEntry(body);
-    if (body.action === 'delete') return deleteEntry(body);
-    if (body.action === 'setRate') return setRate(body);
-    return jsonResponse({ error: 'Unknown action' });
-  } catch(err) {
-    return jsonResponse({ error: err.message });
-  }
-}
-
-function getAll() {
-  const sheet = getOrCreateSheet();
-  const rows = sheet.getDataRange().getValues();
-  const entries = [];
-  for (let i = 1; i < rows.length; i++) {
-    if (rows[i][0]) {
-      entries.push({ id: rows[i][0], date: rows[i][1], cat: rows[i][2], amt: rows[i][3], row: i + 1 });
+  function toggleCode() {
+    var wrap  = document.getElementById('codeWrap');
+    var label = document.getElementById('showMoreLabel');
+    var collapsed = wrap.classList.toggle('collapsed');
+    label.innerHTML = collapsed ? '&#9660; Show full code' : '&#9650; Collapse code';
+    if (!collapsed) {
+      wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
-  return jsonResponse({ entries });
-}
-
-function getRate() {
-  const props = PropertiesService.getScriptProperties();
-  const rate = props.getProperty('rate') || '90000';
-  return jsonResponse({ rate: parseInt(rate) });
-}
-
-function setRate(body) {
-  const props = PropertiesService.getScriptProperties();
-  props.setProperty('rate', String(body.rate));
-  return jsonResponse({ ok: true });
-}
-
-function addEntry(body) {
-  const sheet = getOrCreateSheet();
-  const props = PropertiesService.getScriptProperties();
-  const rate = parseInt(props.getProperty('rate') || '90000');
-  const id = Date.now().toString();
-  const usd = (body.amt / rate).toFixed(2);
-  sheet.appendRow([id, body.date, body.cat, body.amt, usd, new Date().toISOString()]);
-  return jsonResponse({ ok: true, id });
-}
-
-function deleteEntry(body) {
-  const sheet = getOrCreateSheet();
-  const rows = sheet.getDataRange().getValues();
-  for (let i = 1; i < rows.length; i++) {
-    if (String(rows[i][0]) === String(body.id)) {
-      sheet.deleteRow(i + 1);
-      return jsonResponse({ ok: true });
-    }
-  }
-  return jsonResponse({ error: 'Entry not found' });
-}
-
-function jsonResponse(data) {
-  return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
-}`;
 
   function copyCode() {
-    navigator.clipboard.writeText(rawCode).then(() => {
-      const btn = document.querySelector('.copy-code-btn');
-      btn.textContent = 'Copied!';
-      setTimeout(() => btn.textContent = 'Copy code', 2000);
-    }).catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = rawCode;
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
-      const btn = document.querySelector('.copy-code-btn');
-      btn.textContent = 'Copied!';
-      setTimeout(() => btn.textContent = 'Copy code', 2000);
-    });
+    var code = document.getElementById('codeContent').textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(function() {
+        flashCopied();
+      }).catch(function() {
+        fallbackCopy(code);
+      });
+    } else {
+      fallbackCopy(code);
+    }
+  }
+
+  function fallbackCopy(code) {
+    var ta = document.createElement('textarea');
+    ta.value = code;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    flashCopied();
+  }
+
+  function flashCopied() {
+    var btn = document.querySelector('.copy-code-btn');
+    if (!btn) return;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy code'; }, 2000);
   }
 </script>
 </body>
