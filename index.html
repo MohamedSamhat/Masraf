@@ -64,6 +64,7 @@
       .tabs { display: flex !important; position: static !important; border-top: none !important; border-bottom: 1px solid var(--border); padding: 0 24px; background: var(--surface); padding-bottom: 0 !important; }
       .tab { flex: 0 !important; padding: 13px 20px !important; border-top: none !important; border-bottom: 2px solid transparent; }
       .tab.active { background: none !important; border-top-color: transparent !important; border-bottom-color: var(--accent); }
+      .tab-help-btn { margin-right: 0; }
 
       /* Log tab: form on left, entries scrolling on right */
       #logTab { flex-direction: row; gap: 20px; align-items: flex-start; padding: 20px 24px; }
@@ -124,6 +125,8 @@
     .tab { flex: 1; background: none; border: none; color: var(--muted); font-family: var(--sans); font-size: 13px; font-weight: 700; cursor: pointer; transition: color 0.15s, background 0.15s, border-color 0.15s, transform 0.1s; letter-spacing: 0.3px; }
     .tab:active { transform: scale(0.96); }
     .tab.active { color: var(--accent); }
+    .tab-help-btn { margin-left: auto; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; align-self: center; margin-right: 6px; border-radius: 50%; border: 1px solid var(--border); background: none; color: var(--muted); font-family: var(--mono); font-size: 14px; font-weight: 700; text-decoration: none; flex-shrink: 0; transition: color 0.15s, border-color 0.15s; }
+    .tab-help-btn:hover { color: var(--accent); border-color: var(--accent); }
 
     /* SCROLL AREAS */
     .scroll-area { flex: 1; overflow-y: auto; padding: 14px 18px; display: flex; flex-direction: column; gap: 12px; }
@@ -444,6 +447,7 @@
     <div class="tabs">
       <button class="tab active" onclick="switchTab('log')">＋ Log</button>
       <button class="tab" onclick="switchTab('summary')">≡ Summary</button>
+      <a href="instructions.html" class="tab-help-btn" title="Setup instructions">?</a>
     </div>
 
     <!-- LOG TAB -->
