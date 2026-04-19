@@ -1479,19 +1479,23 @@
       });
       const monthIncomeEntries = incomeEntries.filter(e => getMonthKey(e.date) === activeMonth);
       const totalIncome = monthIncomeEntries.reduce((s,e) => s + Number(e.amt), 0);
-      // Savings: cumulative total up to and including this month
+      // Savings: month-only for balance; cumulative for all-time savings display
       const activeMkNum = mkToNum(activeMonth);
+      const monthSavings = savingsEntries
+        .filter(e => e.month === activeMonth)
+        .reduce((s, e) => s + Number(e.amt), 0);
       const netSavings = savingsEntries
         .filter(e => mkToNum(e.month) <= activeMkNum)
         .reduce((s, e) => s + Number(e.amt), 0);
-      const net = totalIncome - grand - netSavings;
+      const net = totalIncome - grand - monthSavings;
       // Pending scheduled for this month
       const pendingScheduled = scheduledEntries.filter(e => e.month === activeMonth && e.status !== 'spent');
       const pendingTotal = pendingScheduled.reduce((s, e) => s + Number(e.amt), 0);
       const plannedNet = net - pendingTotal;
-      if (totalIncome > 0 || netSavings > 0) {
+      if (totalIncome > 0 || monthSavings > 0) {
         txt += `Income: ${fmt(totalIncome)} L.L. = $${(totalIncome/rate).toFixed(2)}\n`;
-        if (netSavings > 0) txt += `Savings: −${fmt(netSavings)} L.L.\n`;
+        if (monthSavings > 0) txt += `Saved this month: −${fmt(monthSavings)} L.L.\n`;
+        if (netSavings > monthSavings) txt += `Total saved (all-time): ${fmt(netSavings)} L.L.\n`;
         txt += `Balance: ${net >= 0 ? '+' : ''}${fmt(net)} L.L.\n`;
       }
       if (pendingTotal > 0) {
@@ -1517,6 +1521,7 @@
             <span class="bal-label">Total Saved</span>
             <span class="bal-ll">−${fmt(netSavings)} LL</span>
             <span class="bal-usd">−${(netSavings/rate).toFixed(2)} $</span>
+            ${monthSavings > 0 && netSavings !== monthSavings ? `<span style="font-size:10px;color:var(--muted);margin-top:2px">this month: −${fmt(monthSavings)} LL</span>` : ''}
           </div>` : ''}
           <div class="bal-item net ${net >= 0 ? 'positive' : 'negative'}">
             <span class="bal-label">Balance</span>
