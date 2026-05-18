@@ -1378,7 +1378,8 @@
       months.forEach(mk => {
         const mEntries = filtered.filter(e => getMonthKey(e.date) === mk);
         const mTotal   = mEntries.reduce((s,e)=>s+Number(e.amt),0);
-        const mIncome  = incomeEntries.filter(e => getMonthKey(e.date) === mk).reduce((s,e)=>s+Number(e.amt),0);
+        const mWithdrawals = withdrawalEntries.filter(e => e.date && getMonthKey(e.date) === mk).reduce((s,e)=>s+Number(e.amt),0);
+        const mIncome  = incomeEntries.filter(e => getMonthKey(e.date) === mk).reduce((s,e)=>s+Number(e.amt),0) + mWithdrawals;
         const mSavings = savingsEntries.filter(e => e.month === mk);
         const mNetSav  = mSavings.reduce((s,e)=>s+Number(e.amt),0);
         const mkNum    = mkToNum(mk);
@@ -1478,7 +1479,8 @@
         </div>`;
       });
       const monthIncomeEntries = incomeEntries.filter(e => getMonthKey(e.date) === activeMonth);
-      const totalIncome = monthIncomeEntries.reduce((s,e) => s + Number(e.amt), 0);
+      const monthWithdrawals = withdrawalEntries.filter(e => e.date && getMonthKey(e.date) === activeMonth).reduce((s,e) => s + Number(e.amt), 0);
+      const totalIncome = monthIncomeEntries.reduce((s,e) => s + Number(e.amt), 0) + monthWithdrawals;
       // Savings: month-only for balance; cumulative for all-time savings display
       const activeMkNum = mkToNum(activeMonth);
       const monthSavings = savingsEntries
