@@ -1381,7 +1381,8 @@
         const mWithdrawals = withdrawalEntries.filter(e => e.date && getMonthKey(e.date) === mk).reduce((s,e)=>s+Number(e.amt),0);
         const mIncome  = incomeEntries.filter(e => getMonthKey(e.date) === mk).reduce((s,e)=>s+Number(e.amt),0) + mWithdrawals;
         const mSavings = savingsEntries.filter(e => e.month === mk);
-        const mNetSav  = mSavings.reduce((s,e)=>s+Number(e.amt),0);
+        const mWithdrawnFromMonth = withdrawalEntries.filter(e => e.month === mk).reduce((s,e)=>s+Number(e.amt),0);
+        const mNetSav  = mSavings.reduce((s,e)=>s+Number(e.amt),0) + mWithdrawnFromMonth;
         const mkNum    = mkToNum(mk);
         const mPending = mkNum >= currentMkNum
           ? scheduledEntries.filter(e=>e.month===mk&&e.status!=='spent').reduce((s,e)=>s+Number(e.amt),0)
@@ -1485,7 +1486,8 @@
       const activeMkNum = mkToNum(activeMonth);
       const monthSavings = savingsEntries
         .filter(e => e.month === activeMonth)
-        .reduce((s, e) => s + Number(e.amt), 0);
+        .reduce((s, e) => s + Number(e.amt), 0)
+        + withdrawalEntries.filter(e => e.month === activeMonth).reduce((s, e) => s + Number(e.amt), 0);
       const netSavings = savingsEntries
         .filter(e => mkToNum(e.month) <= activeMkNum)
         .reduce((s, e) => s + Number(e.amt), 0);
